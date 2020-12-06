@@ -1,37 +1,42 @@
 package bank;
 
 import java.sql.*;
+import bank.repository.*;
 
 public class Main {
 
-    // Адрес БД => Протокол : Производитель : Расположение СУБД (для сетевых указать имя или IP удаленного сервер, номера портов
+    // DB Address => Protocol : Vendor : DBMS location (IP or ports for network connections)
     public static final String DB_URL = "jdbc:h2:/Users/iyakozlina/SBER/ProjectTest/src/bank.Main.java";
-    // Имя драйвера
+    // DB driver name
     public static final String DB_Driver = "org.h2.Driver";
+    //DB tables
 
+
+    //Initiate
+
+
+    //Create and connect tables
+
+
+    //Start
     public static void main(String[] args) {
         try {
-            //загрузка драйвера, его регистрация с помощью DriverManager
+            //load driver, get it registered by DriverManager
             Class.forName(DB_Driver);
-
+            //connect to DB
             Connection connection = DriverManager.getConnection(DB_URL);
-//соединениесБД
-
-            System.out.println("Соединение с СУБД выполнено.");
+            System.out.println("DB connection: connected");
+            //disconnect
             connection.close();
-// отключение от БД
-
-            System.out.println("Отключение от СУБД выполнено.");
+            System.out.println("DB connection: disconnected");
         } catch (ClassNotFoundException e) {
+            //Class.forName() Exception handling
             e.printStackTrace();
-// обработка ошибки  Class.forName
-
-            System.out.println("JDBC драйвер для СУБД не найден!");
+            System.out.println("JDBC driver for DBMS not found!");
         } catch (SQLException e) {
+            // DriverManager.getConnection Exception handling
             e.printStackTrace();
-// обработка ошибок  DriverManager.getConnection
-
-            System.out.println("Ошибка SQL !");
+            System.out.println("SQL error!");
         }
     }
 }

@@ -1,9 +1,11 @@
+package bank;
+
 import java.sql.*;
 
 public class Main {
 
     // Адрес БД => Протокол : Производитель : Расположение СУБД (для сетевых указать имя или IP удаленного сервер, номера портов
-    public static final String DB_URL = "jdbc:h2:/Users/iyakozlina/SBER/ProjectTest/src/Main.java";
+    public static final String DB_URL = "jdbc:h2:/Users/iyakozlina/SBER/ProjectTest/src/bank.Main.java";
     // Имя драйвера
     public static final String DB_Driver = "org.h2.Driver";
 

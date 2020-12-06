@@ -1,6 +1,8 @@
+package bank.model;
+
 import java.math.BigDecimal;
 
-public class Share {
+public class Account {
     private String name;
     private BigDecimal startPrice;
     private int changeProbability;

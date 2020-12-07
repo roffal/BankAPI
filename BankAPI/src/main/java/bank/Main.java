@@ -1,6 +1,12 @@
 package bank;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
+import java.util.Scanner;
+
 import bank.repository.*;
 import org.h2.tools.DeleteDbFiles;
 import org.h2.tools.Server;
@@ -34,7 +40,19 @@ public class Main {
             //connect to DB
             Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
             System.out.println("DB connection: connected");
-            //disconnect
+            Statement statement = connection.createStatement();
+            String pathSchema = "/Users/iyakozlina/SBER/BankAPI/src/main/resources/schema.sql";
+            String schema = new String(Files.readAllBytes(Paths.get(pathSchema)));
+            statement.execute(schema);
+            String pathData = "/Users/iyakozlina/SBER/BankAPI/src/main/resources/data.sql";
+            String data = new String(Files.readAllBytes(Paths.get(pathData)));
+            statement.execute(data);
+            ResultSet resultSet = statement.executeQuery("select id, name, surname from clients ");
+            while (resultSet.next()) {
+                System.out.println(resultSet.getInt("id"));
+                System.out.println(resultSet.getString("name"));
+                System.out.println(resultSet.getString("surname"));
+            }
             connection.close();
             System.out.println("DB connection: disconnected");
         } catch (ClassNotFoundException e) {
@@ -45,6 +63,10 @@ public class Main {
             // DriverManager.getConnection Exception handling
             e.printStackTrace();
             System.out.println("SQL error!");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         //DeleteDbFiles.execute("~", "test", true);
     }

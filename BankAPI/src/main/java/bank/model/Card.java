@@ -6,6 +6,7 @@ public class Card {
     private Long id;
     private Long cardNumber;
     private Account account;
+    //private short pin;
 
     public Card(){
     }
@@ -33,6 +34,14 @@ public class Card {
     public void setAccount(Account account) {
         this.account = account;
     }
+
+    /*public int getPin() {
+        return pin;
+    }
+
+    public void setPin(int pin) {
+        this.pin = pin;
+    }*/
 
     @Override
     public boolean equals(Object o) {

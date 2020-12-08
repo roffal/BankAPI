@@ -1,26 +1,18 @@
 package bank.service;
 
-import bank.bl.DataBaseUtil;
+import bank.util.DataBaseUtil;
 import bank.dao.CardDAO;
-import bank.model.Account;
 import bank.model.Card;
-import bank.model.Client;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class CardDAOImpl extends DataBaseUtil implements CardDAO {
     private Connection connection = getConnection();
-
-    @Override
-    public List<Card> getAllByClientID() {
-        return null;
-    }
 
     @Override
     public Card getById(Long id){
@@ -70,6 +62,18 @@ public class CardDAOImpl extends DataBaseUtil implements CardDAO {
     public List<Card> getAll() {
         List<Card> cards = new ArrayList<Card>();
         String sql = "SELECT id, card_number, account_id FROM cards";
+        return getCards(cards, sql);
+    }
+
+    @Override
+    public List<Card> getAllByClientID(Long id) {
+        List<Card> cards = new ArrayList<Card>();
+        String sql = "SELECT cards.id, cards.card_number, cards.account_id FROM cards, accounts WHERE cards.account_id =" +
+                " accounts.id and accounts.client_id = " + String.valueOf(id);
+        return getCards(cards, sql);
+    }
+
+    private List<Card> getCards(List<Card> cards, String sql) {
         PreparedStatement ps = getPreparedStatement(sql);
         try {
             ResultSet resultSet = ps.executeQuery();
@@ -85,26 +89,35 @@ public class CardDAOImpl extends DataBaseUtil implements CardDAO {
             e.printStackTrace();
         }
         closePrepareStatement(ps);
-        return null;
+        return cards;
     }
+
 
     @Override
     public void update(Card card) {
-
+        String sql = "UPDATE cards SET card_number = ?, account_id = ? WHERE ID = " + String.valueOf(card.getId());
+        PreparedStatement ps = getPreparedStatement(sql);
+        try {
+            ps.setLong(1, card.getCardNumber());
+            ps.setLong(2, card.getAccountId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closePrepareStatement(ps);
     }
 
     @Override
     public void delete(Long id) {
-
+        String sql = "DELETE FROM cards WHERE id =" + String.valueOf(id);
+        PreparedStatement ps = getPreparedStatement(sql);
+        try {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closePrepareStatement(ps);
     }
 
-    @Override
-    public void create(Card entity) {
 
-    }
-
-    @Override
-    public void delete(Card card) {
-
-    }
 }

@@ -2,19 +2,12 @@ package bank.dao;
 
 import bank.model.Account;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface AccountDAO extends DAO<Account>{
 
-    public List<Account> getAll();
+    public Account getByNumber(BigDecimal id);
 
-    public Account getById(Long id);
-
-//not needed in this project for now
-    //public void add(Account account);
-
-    //public void delete(Account account);
-
-    public void update(Account account);
-
+    public List<Account> getAllByClientId(Long number);
 }

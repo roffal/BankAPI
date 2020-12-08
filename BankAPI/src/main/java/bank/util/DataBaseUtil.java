@@ -1,15 +1,9 @@
-package bank.bl;
+package bank.util;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
-import java.util.Scanner;
-
-import bank.repository.*;
-import org.h2.tools.DeleteDbFiles;
-import org.h2.tools.Server;
 
 /**
  * Kozlina Iya, 2020

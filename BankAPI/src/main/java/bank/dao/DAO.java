@@ -13,6 +13,6 @@ public interface DAO<E> {
 
     public void delete(Long id);
 
-    public void create(E entity);
+    public void add(E entity);
 
 }

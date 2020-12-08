@@ -1,6 +1,6 @@
 package bank.service;
 
-import bank.bl.DataBaseUtil;
+import bank.util.DataBaseUtil;
 import bank.dao.ClientDAO;
 import bank.model.Client;
 
@@ -9,6 +9,11 @@ import java.util.List;
 
 public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
     private Connection connection = getConnection();
+
+    @Override
+    public List<Client> getAll() {
+        return null;
+    }
 
     @Override
     public Client getById(Long id){
@@ -32,11 +37,6 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
     }
 
     @Override
-    public List<Client> getAll() {
-        return null;
-    }
-
-    @Override
     public void update(Client entity) {
 
     }
@@ -47,7 +47,9 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
     }
 
     @Override
-    public void create(Client entity) {
+    public void add(Client entity) {
 
     }
+
+
 }

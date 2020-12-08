@@ -87,7 +87,27 @@ public class CardDAOImpl extends DataBaseUtil implements CardDAO {
     }
 
     @Override
+    public List<Card> getAll() {
+        return null;
+    }
+
+    @Override
+    public Card getEntityById(Long id) {
+        return null;
+    }
+
+    @Override
     public void update(Card card) {
+
+    }
+
+    @Override
+    public void delete(Long id) {
+
+    }
+
+    @Override
+    public void create(Card entity) {
 
     }
 

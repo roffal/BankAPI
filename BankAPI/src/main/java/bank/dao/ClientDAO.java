@@ -6,7 +6,7 @@ import bank.model.Client;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface ClientDAO {
+public interface ClientDAO extends DAO<Client> {
 
     public Client getById(Long id) throws SQLException;
 

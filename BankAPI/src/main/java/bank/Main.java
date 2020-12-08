@@ -45,7 +45,7 @@ public class Main {
         }*/
 
         //DeleteDbFiles.execute("~", "test", true);
-        ClientDAOImpl clientService = new ClientDAOImpl(connection);
+        ClientDAOImpl clientService = new ClientDAOImpl();
         System.out.println(clientService.getById(2l).toString());
     }
 }

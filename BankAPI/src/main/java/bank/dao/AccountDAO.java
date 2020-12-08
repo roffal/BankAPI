@@ -4,7 +4,7 @@ import bank.model.Account;
 
 import java.util.List;
 
-public interface AccountDAO {
+public interface AccountDAO extends DAO<Account>{
 
     public List<Account> getAll();
 
@@ -13,7 +13,8 @@ public interface AccountDAO {
 //not needed in this project for now
     //public void add(Account account);
 
+    //public void delete(Account account);
+
     public void update(Account account);
 
-    public void delete(Account account);
 }

@@ -24,18 +24,20 @@ public class DataBaseUtil {
     private static final String PASSWORD = "";
     private static final String pathSchema = "/Users/iyakozlina/SBER/BankAPI/src/main/resources/schema.sql";
     private static final String pathData = "/Users/iyakozlina/SBER/BankAPI/src/main/resources/data.sql";
+    private Connection connection = null;
 
     public Connection getConnection() {
-        Connection connection = null;
-        try {
-            //load driver, get it registered by DriverManager
-            Class.forName(DB_Driver);
-            //connect to DB
-            connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-            System.out.println("DB connected");
-        } catch (ClassNotFoundException | SQLException e){
-            System.out.println("DB connection ERROR");
-            e.printStackTrace();
+        if (connection == null) {
+            try {
+                //load driver, get it registered by DriverManager
+                Class.forName(DB_Driver);
+                //connect to DB
+                connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+                System.out.println("DB connected");
+            } catch (ClassNotFoundException | SQLException e) {
+                System.out.println("DB connection ERROR");
+                e.printStackTrace();
+            }
         }
         return connection;
     }
@@ -46,4 +48,26 @@ public class DataBaseUtil {
         String data = new String(Files.readAllBytes(Paths.get(pathData)));
         statement.execute(data);
     }
+
+    public PreparedStatement getPreparedStatement(String sql){
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement(sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ps;
+    }
+
+    public void closePrepareStatement(PreparedStatement ps){
+        if (ps != null){
+            try {
+                ps.close();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

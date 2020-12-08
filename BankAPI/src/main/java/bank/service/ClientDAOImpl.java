@@ -5,42 +5,55 @@ import bank.dao.ClientDAO;
 import bank.model.Client;
 
 import java.sql.*;
+import java.util.List;
 
 public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
     Connection connection;
 
-    public ClientDAOImpl(Connection connection){
-        this.connection = connection;
-    }
-
     @Override
     public Client getById(Long id) throws SQLException {
-        //connection = getConnection();
-        Statement statement = connection.createStatement();
-        String sql = "SELECT id, name, surname FROM clients WHERE id = " + String.valueOf(id);
+        connection = getConnection();
+        String sql = "SELECT id, name, surname, birthday FROM clients WHERE id = " + String.valueOf(id);
+        PreparedStatement ps = getPreparedStatement(sql);
         Client client = new Client();
         try {
-            //ResultSet resultSet = statement.executeQuery(sql);
-            ResultSet resultSet = statement.executeQuery("select id, name, surname from clients where id = 2");
+            ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                System.out.println(resultSet.getInt("id"));
-                System.out.println(resultSet.getString("name"));
-                System.out.println(resultSet.getString("surname"));
+                client.setId(resultSet.getLong("id"));
+                client.setName(resultSet.getString("name"));
+                client.setSurname(resultSet.getString("surname"));
+                client.setBirthday(resultSet.getDate("birthday"));
             }
-
-            //preparedStatement.execute();
         } catch (SQLException e){
             System.out.println("SQL error");
             e.printStackTrace();
-        }/* finally {
-            //if (preparedStatement != null) {
-            //    preparedStatement.close();
-            //}
-            //if (connection != null){
-           //     connection.close();
-          //      System.out.println("DB disconnected");
-            }
-        }*/
+        }
+        closePrepareStatement(ps);
         return client;
+    }
+
+    @Override
+    public List<Client> getAll() {
+        return null;
+    }
+
+    @Override
+    public Client getEntityById(Long id) {
+        return null;
+    }
+
+    @Override
+    public void update(Client entity) {
+
+    }
+
+    @Override
+    public void delete(Long id) {
+
+    }
+
+    @Override
+    public void create(Client entity) {
+
     }
 }

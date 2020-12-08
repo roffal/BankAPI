@@ -6,7 +6,7 @@ import bank.model.Card;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface CardDAO {
+public interface CardDAO extends DAO<Card> {
 
     public List<Card> getAllByClientID();
 

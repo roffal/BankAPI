@@ -41,7 +41,7 @@ public class Account {
         this.accountNumber = accountNumber;
     }
 
-    public Long getClient() {
+    public Long getClientId() {
         return clientId;
     }
 

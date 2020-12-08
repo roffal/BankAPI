@@ -69,6 +69,12 @@ public class Main {
             System.out.println(a.toString());
         }
 
+        System.out.println("!!!print cards by client_id 4");
+        cards = cardService.getAllByClientID(4l);
+        for (Card a : cards){
+            System.out.println(a.toString());
+        }
+
 
 
         //System.out.println(cardService.getByNumber(4000001234568000l).toString());

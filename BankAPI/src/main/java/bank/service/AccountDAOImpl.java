@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountDAOImpl extends DataBaseUtil implements AccountDAO {
@@ -16,7 +17,37 @@ public class AccountDAOImpl extends DataBaseUtil implements AccountDAO {
 
     @Override
     public List<Account> getAll() {
-        return null;
+        List<Account> accounts = new ArrayList<Account>();
+        String sql = "SELECT id, account_number, balance, client_id FROM accounts";
+        return getAccounts(accounts, sql);
+    }
+
+    @Override
+    public List<Account> getAllByClientId(Long id) {
+        List<Account> accounts = new ArrayList<Account>();
+        String sql = "SELECT accounts.id, accounts.account_number, accounts.balance accounts.client_id" +
+                " FROM accounts WHERE accounts.client_id =" + String.valueOf(id);
+        return getAccounts(accounts, sql);
+    }
+
+    private List<Account> getAccounts(List<Account> accounts, String sql) {
+        PreparedStatement ps = getPreparedStatement(sql);
+        try {
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                Account account = new Account();
+                account.setId(resultSet.getLong("ID"));
+                account.setAccountNumber(resultSet.getBigDecimal("CARD_NUMBER"));
+                account.setBalance(resultSet.getBigDecimal("BALANCE"));
+                account.setClientId(resultSet.getLong("CLIENT_ID"));
+                accounts.add(account);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL error");
+            e.printStackTrace();
+        }
+        closePrepareStatement(ps);
+        return accounts;
     }
 
     @Override
@@ -52,21 +83,39 @@ public class AccountDAOImpl extends DataBaseUtil implements AccountDAO {
 
     @Override
     public void update(Account account) {
+        String sql = "UPDATE accounts SET account_number = ?, balance = ?, " +
+                "client_id = ? WHERE ID = " + String.valueOf(account.getId());
+        updateDB(account, sql);
+    }
 
+    @Override
+    public void add(Account account) {
+        String sql = "INSERT INTO accounts (account_number, balance, client_id) VALUES(?, ?, ?)";
+        updateDB(account, sql);
+    }
+
+    private void updateDB(Account account, String sql) {
+        PreparedStatement ps = getPreparedStatement(sql);
+        try {
+            ps.setBigDecimal(1, account.getAccountNumber());
+            ps.setBigDecimal(2, account.getBalance());
+            ps.setLong(3, account.getClientId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closePrepareStatement(ps);
     }
 
     @Override
     public void delete(Long id) {
-
-    }
-
-    @Override
-    public void add(Account entity) {
-
-    }
-
-    @Override
-    public List<Account> getAllByClientId(Long id) {
-        return null;
+        String sql = "DELETE FROM accounts WHERE id =" + String.valueOf(id);
+        PreparedStatement ps = getPreparedStatement(sql);
+        try {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closePrepareStatement(ps);
     }
 }

@@ -47,6 +47,10 @@ public class CardDAOImpl extends DataBaseUtil implements CardDAO {
     @Override
     public void add(Card card) {
         String sql = "INSERT INTO cards (card_number, account_id) VALUES(?, ?)";
+        updateDB(card, sql);
+    }
+
+    private void updateDB(Card card, String sql) {
         PreparedStatement ps = getPreparedStatement(sql);
         try {
             ps.setLong(1, card.getCardNumber());
@@ -96,15 +100,7 @@ public class CardDAOImpl extends DataBaseUtil implements CardDAO {
     @Override
     public void update(Card card) {
         String sql = "UPDATE cards SET card_number = ?, account_id = ? WHERE ID = " + String.valueOf(card.getId());
-        PreparedStatement ps = getPreparedStatement(sql);
-        try {
-            ps.setLong(1, card.getCardNumber());
-            ps.setLong(2, card.getAccountId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        closePrepareStatement(ps);
+        updateDB(card, sql);
     }
 
     @Override

@@ -9,7 +9,6 @@ public class Client {
     private String name;
     private String surname;
     private Date birthday;
-    private int phone;
     private Set<Account> accounts;
 
     public Client(){
@@ -55,21 +54,12 @@ public class Client {
         this.accounts = accounts;
     }
 
-    public int getPhone() {
-        return phone;
-    }
-
-    public void setPhone(int phone) {
-        this.phone = phone;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return phone == client.phone &&
-                Objects.equals(id, client.id) &&
+        return Objects.equals(id, client.id) &&
                 Objects.equals(name, client.name) &&
                 Objects.equals(surname, client.surname) &&
                 Objects.equals(birthday, client.birthday) &&
@@ -78,7 +68,7 @@ public class Client {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, birthday, phone, accounts);
+        return Objects.hash(id, name, surname, birthday, accounts);
     }
 
     @Override
@@ -88,7 +78,6 @@ public class Client {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", birthday=" + birthday +
-                ", phone=" + phone +
                 '}';
     }
 }

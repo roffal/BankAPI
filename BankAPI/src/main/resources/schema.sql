@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS cards, clients, accounts;
 CREATE TABLE clients(
 id SERIAL NOT NULL PRIMARY KEY,
-name VARCHAR(50) NOT NULL,
-surname VARCHAR(50) NOT NULL,
+name TEXT NOT NULL,
+surname TEXT NOT NULL,
 birthday DATE
 );
 

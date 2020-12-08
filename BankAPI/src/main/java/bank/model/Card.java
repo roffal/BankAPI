@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Card {
     private Long id;
     private Long cardNumber;
-    private Account account;
+    private Long accountId;
     //private short pin;
 
     public Card(){
@@ -27,13 +27,11 @@ public class Card {
         this.cardNumber = cardNumber;
     }
 
-    public Account getAccount() {
-        return account;
+    public Long getAccountId() {
+        return accountId;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+    public void setAccountId(Long accountId) { this.accountId = accountId; }
 
     /*public int getPin() {
         return pin;
@@ -50,12 +48,12 @@ public class Card {
         Card card = (Card) o;
         return Objects.equals(id, card.id) &&
                 Objects.equals(cardNumber, card.cardNumber) &&
-                Objects.equals(account, card.account);
+                Objects.equals(accountId, card.accountId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cardNumber, account);
+        return Objects.hash(id, cardNumber, accountId);
     }
 
     @Override
@@ -63,7 +61,7 @@ public class Card {
         return "Card{" +
                 "id=" + id +
                 ", cardNumber=" + cardNumber +
-                ", account=" + account +
+                ", accountId=" + accountId +
                 '}';
     }
 }

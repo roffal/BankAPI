@@ -4,42 +4,43 @@ import bank.bl.DataBaseUtil;
 import bank.dao.ClientDAO;
 import bank.model.Client;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
-    Connection connection = getConnection();
+    Connection connection;
+
+    public ClientDAOImpl(Connection connection){
+        this.connection = connection;
+    }
 
     @Override
     public Client getById(Long id) throws SQLException {
-        PreparedStatement preparedStatement = null;
-        String sql = "SELECT id, name, surname, birthday FROM clients WHERE id = ?";
+        //connection = getConnection();
+        Statement statement = connection.createStatement();
+        String sql = "SELECT id, name, surname FROM clients WHERE id = " + String.valueOf(id);
         Client client = new Client();
         try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, id);
+            //ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = statement.executeQuery("select id, name, surname from clients where id = 2");
+            while (resultSet.next()) {
+                System.out.println(resultSet.getInt("id"));
+                System.out.println(resultSet.getString("name"));
+                System.out.println(resultSet.getString("surname"));
+            }
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            client.setId(resultSet.getLong("ID"));
-            client.setName(resultSet.getString("NAME"));
-            client.setSurname(resultSet.getString("SURNAME"));
-            client.setBirthday(resultSet.getDate("BIRTHDAY"));
-
-            preparedStatement.executeUpdate();
+            //preparedStatement.execute();
         } catch (SQLException e){
             System.out.println("SQL error");
             e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
+        }/* finally {
+            //if (preparedStatement != null) {
+            //    preparedStatement.close();
+            //}
+            //if (connection != null){
+           //     connection.close();
+          //      System.out.println("DB disconnected");
             }
-            if (connection != null){
-                connection.close();
-            }
-        }
+        }*/
         return client;
     }
 }

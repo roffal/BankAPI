@@ -8,4 +8,8 @@ import java.util.List;
 
 public interface ClientDAO extends DAO<Client> {
 
+    public Client getByAccountID(Long accountId);
+
+    public Client getByLogin(String login);
+
 }

@@ -3,6 +3,7 @@ package bank.model;
 import com.sun.tools.internal.xjc.reader.dtd.bindinfo.BIAttribute;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -12,7 +13,6 @@ public class Account {
     private BigDecimal accountNumber;
     private BigDecimal balance;
     private Long clientId;
-    private Set<Card> cards;
 
     public Account(){
     }
@@ -49,14 +49,6 @@ public class Account {
         this.clientId = clientId;
     }
 
-    public Set<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(Set<Card> cards) {
-        this.cards = cards;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,13 +57,12 @@ public class Account {
         return Objects.equals(id, account.id) &&
                 Objects.equals(accountNumber, account.accountNumber) &&
                 Objects.equals(balance, account.balance) &&
-                Objects.equals(clientId, account.clientId) &&
-                Objects.equals(cards, account.cards);
+                Objects.equals(clientId, account.clientId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, accountNumber, balance, clientId, cards);
+        return Objects.hash(id, accountNumber, balance, clientId);
     }
 
     @Override

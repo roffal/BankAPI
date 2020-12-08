@@ -1,15 +1,16 @@
 package bank.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class Client {
     private Long id;
     private String name;
-    private String surname;
-    private Date birthday;
-    private Set<Account> accounts;
+    private String login;
+    private String pass;
+    private List<Account> accounts;
+    private List<Card> cards;
 
     public Client(){
     }
@@ -30,29 +31,38 @@ public class Client {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLogin() {
+        return login;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public String getPass() {
+        return pass;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 
-    public Set<Account> getAccounts() {
+    public List<Account> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(Set<Account> accounts) {
+    public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -61,14 +71,15 @@ public class Client {
         Client client = (Client) o;
         return Objects.equals(id, client.id) &&
                 Objects.equals(name, client.name) &&
-                Objects.equals(surname, client.surname) &&
-                Objects.equals(birthday, client.birthday) &&
-                Objects.equals(accounts, client.accounts);
+                Objects.equals(login, client.login) &&
+                Objects.equals(pass, client.pass) &&
+                Objects.equals(accounts, client.accounts) &&
+                Objects.equals(cards, client.cards);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, birthday, accounts);
+        return Objects.hash(id, name, login, pass, accounts, cards);
     }
 
     @Override
@@ -76,8 +87,8 @@ public class Client {
         return "Client{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", birthday=" + birthday +
+                ", surname='" + login + '\'' +
+                ", birthday=" + pass +
                 '}';
     }
 }

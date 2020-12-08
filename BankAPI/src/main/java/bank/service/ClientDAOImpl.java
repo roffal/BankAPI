@@ -14,7 +14,11 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
 
     @Override
     public Client getById(Long id){
-        String sql = "SELECT id, name, surname, birthday FROM clients WHERE id = " + String.valueOf(id);
+        String sql = "SELECT id, name, login, pass FROM clients WHERE id = " + String.valueOf(id);
+        return getClient(sql);
+    }
+
+    private Client getClient(String sql) {
         PreparedStatement ps = getPreparedStatement(sql);
         Client client = new Client();
         try {
@@ -22,8 +26,8 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
             while (resultSet.next()) {
                 client.setId(resultSet.getLong("id"));
                 client.setName(resultSet.getString("name"));
-                client.setSurname(resultSet.getString("surname"));
-                client.setBirthday(resultSet.getDate("birthday"));
+                client.setLogin(resultSet.getString("login"));
+                client.setPass(resultSet.getString("pass"));
             }
         } catch (SQLException e){
             System.out.println("SQL error");
@@ -36,7 +40,7 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
     @Override
     public List<Client> getAll() {
         List<Client> clients = new ArrayList<Client>();
-        String sql = "SELECT id, name, surname, birthday FROM clients";
+        String sql = "SELECT id, name, login, pass FROM clients";
         PreparedStatement ps = getPreparedStatement(sql);
         try {
             ResultSet resultSet = ps.executeQuery();
@@ -44,8 +48,8 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
                 Client client = new Client();
                 client.setId(resultSet.getLong("id"));
                 client.setName(resultSet.getString("name"));
-                client.setSurname(resultSet.getString("surname"));
-                client.setBirthday(resultSet.getDate("birthday"));
+                client.setLogin(resultSet.getString("login"));
+                client.setPass(resultSet.getString("pass"));
                 clients.add(client);
             }
         } catch (SQLException e) {
@@ -58,13 +62,13 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
 
     @Override
     public void update(Client entity) {
-        String sql = "UPDATE clients SET name = ?, surname = ?, birthday = ? WHERE ID = " + String.valueOf(entity.getId());
+        String sql = "UPDATE clients SET name = ?, login = ?, pass = ? WHERE ID = " + String.valueOf(entity.getId());
         updateDB(entity, sql);
     }
 
     @Override
     public void add(Client entity) {
-        String sql = "INSERT INTO clients (name, surname, birthday) VALUES (?, ?, ?))";
+        String sql = "INSERT INTO clients (name, login, pass) VALUES (?, ?, ?))";
         updateDB(entity, sql);
     }
 
@@ -72,8 +76,8 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
         PreparedStatement ps = getPreparedStatement(sql);
         try {
             ps.setString(1, entity.getName());
-            ps.setString(2, entity.getSurname());
-            ps.setDate(3, (Date) entity.getBirthday());
+            ps.setString(2, entity.getLogin());
+            ps.setString(3, entity.getPass());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,4 +97,16 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
         closePrepareStatement(ps);
     }
 
+    @Override
+    public Client getByAccountID(Long accountId) {
+        String sql = "SELECT id, name, login, pass FROM clients " +
+                "WHERE id = (SELECT client_id FROM accounts WHERE id = " + String.valueOf(accountId) +")";
+        return getClient(sql);
+    }
+
+    @Override
+    public Client getByLogin(String login) {
+        String sql = "SELECT id, name, login, pass FROM clients WHERE login =" + login;
+        return getClient(sql);
+    }
 }

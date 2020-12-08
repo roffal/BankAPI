@@ -1,15 +1,15 @@
-INSERT INTO clients(name, surname, birthday)
+INSERT INTO clients(name, login, pass)
 VALUES
     ('Michael', 'Smith', '20001012'),
     ('Will', 'Parry', '19901119'),
-    ('Lira', 'Belaqua', '19910108'),
+    ('Lira', 'Pont', '19910108'),
     ('Marissa', 'Colter', '19880926'),
     ('Asriel', 'Belaqua', '19620604'),
     ('Seraphima', 'Pekkala', '19670601'),
     ('Lee', 'Scorsby', '19721006'),
     ('Roger', 'Cook', '19910912'),
     ('Charles', 'Boreal', '19910116'),
-    ('Joe', 'Parry', '19780713');
+    ('Joe', 'Shamen', '19780713');
 
 INSERT INTO accounts(account_number, client_id)
 VALUES

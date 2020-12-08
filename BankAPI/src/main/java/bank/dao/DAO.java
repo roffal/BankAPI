@@ -7,7 +7,7 @@ import java.util.List;
 public interface DAO<E> {
     public List<E> getAll();
 
-    public E getEntityById(Long id);
+    public E getById(Long id);
 
     public void update(E entity);
 

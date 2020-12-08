@@ -24,7 +24,7 @@ public class DataBaseUtil {
     private static final String PASSWORD = "";
     private static final String pathSchema = "/Users/iyakozlina/SBER/BankAPI/src/main/resources/schema.sql";
     private static final String pathData = "/Users/iyakozlina/SBER/BankAPI/src/main/resources/data.sql";
-    private Connection connection = null;
+    private Connection connection;
 
     public Connection getConnection() {
         if (connection == null) {
@@ -40,6 +40,17 @@ public class DataBaseUtil {
             }
         }
         return connection;
+    }
+
+    public void closeConnection(){
+        if (connection != null) {
+            try {
+                connection.close();
+                System.out.println("DB disconnected");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void createDB(Statement statement) throws IOException, SQLException{

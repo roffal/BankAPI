@@ -10,11 +10,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CardDAOImpl extends DataBaseUtil implements CardDAO {
-    Connection connection = getConnection();
-    private Long number;
+    private Connection connection = getConnection();
 
     @Override
     public List<Card> getAllByClientID() {
@@ -22,77 +23,68 @@ public class CardDAOImpl extends DataBaseUtil implements CardDAO {
     }
 
     @Override
-    public Card getById(Long id) throws SQLException {
-        PreparedStatement preparedStatement = null;
-        String sql = "SELECT id, card_number, account_id WHERE id =" + String.valueOf(id);
-        Card card = new Card();
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            card.setId(resultSet.getLong("ID"));
-            card.setCardNumber(resultSet.getLong("CARD_NUMBER"));
-            card.setAccountId(resultSet.getLong("ACCOUNT_ID"));
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e){
-            System.out.println("SQL error");
-            e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null){
-                connection.close();
-            }
-        }
-        return card;
+    public Card getById(Long id){
+        String sql = "SELECT id, card_number, account_id from cards WHERE id =" + String.valueOf(id);
+        return getCard(sql);
     }
 
     @Override
-    public Card getByNumber(Long number) throws SQLException {
-        this.number = number;
-        PreparedStatement preparedStatement = null;
-        String sql = "SELECT id, card_number, account_id WHERE card_number = ?";
+    public Card getByNumber(Long number){
+        String sql = "SELECT id, card_number, account_id from cards WHERE card_number = " + String.valueOf(number);
+        return getCard(sql);
+    }
+
+    private Card getCard(String sql) {
+        PreparedStatement ps = getPreparedStatement(sql);
         Card card = new Card();
         try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, number);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            card.setId(resultSet.getLong("ID"));
-            card.setCardNumber(resultSet.getLong("CARD_NUMBER"));
-            card.setAccountId(resultSet.getLong("ACCOUNT_ID"));
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e){
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                card.setId(resultSet.getLong("ID"));
+                card.setCardNumber(resultSet.getLong("CARD_NUMBER"));
+                card.setAccountId(resultSet.getLong("ACCOUNT_ID"));
+            }
+        } catch (SQLException e) {
             System.out.println("SQL error");
             e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null){
-                connection.close();
-            }
         }
+        closePrepareStatement(ps);
         return card;
     }
 
     @Override
     public void add(Card card) {
-
+        String sql = "INSERT INTO cards (card_number, account_id) VALUES(?, ?)";
+        PreparedStatement ps = getPreparedStatement(sql);
+        try {
+            ps.setLong(1, card.getCardNumber());
+            ps.setLong(2, card.getAccountId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closePrepareStatement(ps);
     }
 
     @Override
     public List<Card> getAll() {
-        return null;
-    }
-
-    @Override
-    public Card getEntityById(Long id) {
+        List<Card> cards = new ArrayList<Card>();
+        String sql = "SELECT id, card_number, account_id FROM cards";
+        PreparedStatement ps = getPreparedStatement(sql);
+        try {
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                Card card = new Card();
+                card.setId(resultSet.getLong("ID"));
+                card.setCardNumber(resultSet.getLong("CARD_NUMBER"));
+                card.setAccountId(resultSet.getLong("ACCOUNT_ID"));
+                cards.add(card);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL error");
+            e.printStackTrace();
+        }
+        closePrepareStatement(ps);
         return null;
     }
 

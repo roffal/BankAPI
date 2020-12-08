@@ -10,9 +10,9 @@ public interface CardDAO extends DAO<Card> {
 
     public List<Card> getAllByClientID();
 
-    public Card getById(Long id) throws SQLException;
+    public Card getById(Long id);
 
-    public Card getByNumber(Long id) throws SQLException;
+    public Card getByNumber(Long id);
 
     public void add(Card card);
 

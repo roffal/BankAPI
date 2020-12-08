@@ -8,11 +8,10 @@ import java.sql.*;
 import java.util.List;
 
 public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
-    Connection connection;
+    private Connection connection = getConnection();
 
     @Override
-    public Client getById(Long id) throws SQLException {
-        connection = getConnection();
+    public Client getById(Long id){
         String sql = "SELECT id, name, surname, birthday FROM clients WHERE id = " + String.valueOf(id);
         PreparedStatement ps = getPreparedStatement(sql);
         Client client = new Client();
@@ -34,11 +33,6 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
 
     @Override
     public List<Client> getAll() {
-        return null;
-    }
-
-    @Override
-    public Client getEntityById(Long id) {
         return null;
     }
 

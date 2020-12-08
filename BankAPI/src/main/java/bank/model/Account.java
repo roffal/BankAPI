@@ -1,5 +1,7 @@
 package bank.model;
 
+import com.sun.tools.internal.xjc.reader.dtd.bindinfo.BIAttribute;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Set;
@@ -7,9 +9,9 @@ import java.util.Set;
 
 public class Account {
     private Long id;
-    private Long accountNumber;
+    private BigDecimal accountNumber;
     private BigDecimal balance;
-    private Client client;
+    private Long clientId;
     private Set<Card> cards;
 
     public Account(){
@@ -31,20 +33,20 @@ public class Account {
         this.balance = balance;
     }
 
-    public Long getAccountNumber() {
+    public BigDecimal getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(Long accountNumber) {
+    public void setAccountNumber(BigDecimal accountNumber) {
         this.accountNumber = accountNumber;
     }
 
-    public Client getClient() {
-        return client;
+    public Long getClient() {
+        return clientId;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     public Set<Card> getCards() {
@@ -63,13 +65,13 @@ public class Account {
         return Objects.equals(id, account.id) &&
                 Objects.equals(accountNumber, account.accountNumber) &&
                 Objects.equals(balance, account.balance) &&
-                Objects.equals(client, account.client) &&
+                Objects.equals(clientId, account.clientId) &&
                 Objects.equals(cards, account.cards);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, accountNumber, balance, client, cards);
+        return Objects.hash(id, accountNumber, balance, clientId, cards);
     }
 
     @Override
@@ -78,7 +80,7 @@ public class Account {
                 "id=" + id +
                 ", accountNumber=" + accountNumber +
                 ", balance=" + balance +
-                ", client=" + client +
+                ", clientId=" + clientId +
                 '}';
     }
 }

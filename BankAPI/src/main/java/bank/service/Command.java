@@ -1,5 +1,7 @@
 package bank.service;
 
+import bank.dao.AccountDAO;
+import bank.model.Account;
 import bank.model.Card;
 import bank.model.Client;
 import bank.net.Inquiry;
@@ -73,14 +75,31 @@ public class Command {
     }
 
     private static Response updateBalance(BigDecimal accountNumber, BigDecimal sum){
-        Response response = new Response();
-
+        Response response;
+        AccountDAOImpl accountDAO = new AccountDAOImpl();
+        Account defaultAc = accountDAO.getByNumber(accountNumber);
+        Account account = accountDAO.getByNumber(accountNumber);
+        account.setBalance(account.getBalance().add(sum));
+        accountDAO.update(account);
+        Account check = accountDAO.getByNumber(accountNumber);
+        if (check.getBalance().equals(account.getBalance())){
+           response = new Response(true, "Account :" + String.valueOf(accountNumber)
+                   + "\nBalance : " + String.valueOf(account.getBalance()));
+        } else {
+            accountDAO.update(defaultAc);
+            response = new Response(false, "Error: account balance was not updated");
+        }
+        accountDAO.closeConnection();
         return response;
     }
 
-    private static Response checkBalance(BigDecimal account_number){
-        Response response = new Response();
-        return response;
+    private static Response checkBalance(BigDecimal accountNumber){
+        Response response;
+        AccountDAOImpl accountDAO = new AccountDAOImpl();
+        Account account = accountDAO.getByNumber(accountNumber);
+        accountDAO.closeConnection();
+        return new Response(true, "Account :" + String.valueOf(accountNumber)
+                + "\nBalance : " + String.valueOf(account.getBalance()));
     }
 
 

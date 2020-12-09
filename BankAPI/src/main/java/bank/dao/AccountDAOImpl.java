@@ -29,8 +29,8 @@ public class AccountDAOImpl extends DataBaseUtil implements AccountDAO {
     @Override
     public List<Account> getAllByClientId(Long id) {
         List<Account> accounts = new ArrayList<Account>();
-        String sql = "SELECT accounts.id, accounts.account_number, accounts.balance accounts.client_id" +
-                " FROM accounts WHERE accounts.client_id =" + String.valueOf(id);
+        String sql = "SELECT id, account_number, balance, client_id" +
+                " FROM accounts WHERE client_id =" + String.valueOf(id);
         return getAccounts(accounts, sql);
     }
 
@@ -41,7 +41,7 @@ public class AccountDAOImpl extends DataBaseUtil implements AccountDAO {
             while (resultSet.next()) {
                 Account account = new Account();
                 account.setId(resultSet.getLong("ID"));
-                account.setAccountNumber(resultSet.getBigDecimal("CARD_NUMBER"));
+                account.setAccountNumber(resultSet.getBigDecimal("ACCOUNT_NUMBER"));
                 account.setBalance(resultSet.getBigDecimal("BALANCE"));
                 account.setClientId(resultSet.getLong("CLIENT_ID"));
                 accounts.add(account);

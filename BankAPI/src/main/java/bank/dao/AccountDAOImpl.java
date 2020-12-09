@@ -13,7 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountDAOImpl extends DataBaseUtil implements AccountDAO {
-    Connection connection = getConnection();
+    Connection connection;
+
+    public AccountDAOImpl(String setCase){
+        this.connection = getConnection(setCase);
+    }
 
     @Override
     public List<Account> getAll() {

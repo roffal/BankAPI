@@ -94,7 +94,7 @@ public class Main {
 
     private static void renewDB() {
         DataBaseUtil util = new DataBaseUtil();
-        Connection connection = util.getConnection();
+        Connection connection = util.getConnection("prod");
         try {
             Statement statement = connection.createStatement();
             DataBaseUtil.createDB(statement);

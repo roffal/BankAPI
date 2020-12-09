@@ -11,22 +11,43 @@ import java.sql.*;
 
 public class DataBaseUtil {
 
-
-    public static final String DB_URL = "jdbc:h2:~/SBER/BankAPI/db/db";
-    public static final String DB_Driver = "org.h2.Driver";
-    private static final String USERNAME = "sa";
-    private static final String PASSWORD = "";
     private static final String pathSchema = "/Users/iyakozlina/SBER/BankAPI/src/main/resources/schema.sql";
     private static final String pathData = "/Users/iyakozlina/SBER/BankAPI/src/main/resources/data.sql";
     private Connection connection;
 
-    public Connection getConnection() {
+    class DB_Settings{
+        public String dbURL;
+        public String dbDriver;
+        private String username;
+        private String password;
+
+        DB_Settings(String setCase){
+            switch (setCase){
+                case("prod"):
+                    dbURL = "jdbc:h2:~/SBER/BankAPI/db/db";
+                    dbDriver = "org.h2.Driver";
+                    username = "sa";
+                    password = "";
+                    break;
+                case("test"):
+                    dbURL = "jdbc:h2:~/test";
+                    dbDriver = "org.h2.Driver";
+                    username = "sa";
+                    password = "";
+                    break;
+            }
+
+        }
+
+    }
+    public Connection getConnection(String setCase) {
+        DB_Settings settings = new DB_Settings(setCase);
         if (connection == null) {
             try {
                 //load driver, get it registered by DriverManager
-                Class.forName(DB_Driver);
+                Class.forName(settings.dbDriver);
                 //connect to DB
-                connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+                connection = DriverManager.getConnection(settings.dbURL, settings.username, settings.password);
                 //System.out.println("DB connected");
             } catch (ClassNotFoundException | SQLException e) {
                 System.out.println("DB connection ERROR");

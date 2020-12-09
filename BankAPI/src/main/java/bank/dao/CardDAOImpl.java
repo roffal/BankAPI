@@ -12,7 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CardDAOImpl extends DataBaseUtil implements CardDAO {
-    private Connection connection = getConnection();
+    private Connection connection;
+
+    public CardDAOImpl(String setCase){
+        this.connection = getConnection(setCase);
+    }
 
     @Override
     public Card getById(Long id){

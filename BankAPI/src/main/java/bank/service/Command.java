@@ -35,8 +35,8 @@ public class Command {
     private static Response issueCard(BigDecimal accountNumber){
         Response response = new Response();
         Card card = new Card();
-        CardDAOImpl cardDAO = new CardDAOImpl();
-        AccountDAOImpl accountDAO = new AccountDAOImpl();
+        CardDAOImpl cardDAO = new CardDAOImpl("prod");
+        AccountDAOImpl accountDAO = new AccountDAOImpl("prod");
         card.setAccountId(accountDAO.getByNumber(accountNumber).getId());
         card.setCardNumber(getUniqueCardNumber(cardDAO));
         cardDAO.add(card);
@@ -57,7 +57,7 @@ public class Command {
 
     private static Response showCards(String login, Long clientId){
         Response response = new Response();
-        CardDAOImpl cardDAO = new CardDAOImpl();
+        CardDAOImpl cardDAO = new CardDAOImpl("prod");
         ArrayList<Card> cards = (ArrayList<Card>)cardDAO.getAllByClientID(clientId);
         response.setStatus(true);
         if (cards.get(0).getId() != null){
@@ -75,7 +75,7 @@ public class Command {
 
     private static Response updateBalance(BigDecimal accountNumber, BigDecimal sum){
         Response response;
-        AccountDAOImpl accountDAO = new AccountDAOImpl();
+        AccountDAOImpl accountDAO = new AccountDAOImpl("prod");
         Account defaultAc = accountDAO.getByNumber(accountNumber);
         Account account = accountDAO.getByNumber(accountNumber);
         account.setBalance(account.getBalance().add(sum));
@@ -94,7 +94,7 @@ public class Command {
 
     private static Response checkBalance(BigDecimal accountNumber){
         Response response;
-        AccountDAOImpl accountDAO = new AccountDAOImpl();
+        AccountDAOImpl accountDAO = new AccountDAOImpl("prod");
         Account account = accountDAO.getByNumber(accountNumber);
         accountDAO.closeConnection();
         return new Response(true, "Account : " + String.valueOf(accountNumber)

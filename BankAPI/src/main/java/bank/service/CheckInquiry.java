@@ -15,7 +15,7 @@ public class CheckInquiry {
 
     public CheckInquiry(Inquiry inquiry){
         this.inquiry = inquiry;
-        ClientDAOImpl clientDAO = new ClientDAOImpl();
+        ClientDAOImpl clientDAO = new ClientDAOImpl("prod");
         this.client = clientDAO.getByLogin(inquiry.getLogin());
         clientDAO.closeConnection();
         if (checkUser(client, inquiry) && checkCommand(client, inquiry))
@@ -49,7 +49,7 @@ public class CheckInquiry {
     private boolean checkAccountAccess(Client client, Inquiry inquiry){
         boolean checkResult = false;
         if (inquiry.getArguments() != null && inquiry.getArguments().size() == 1) {
-            AccountDAOImpl accountDAO = new AccountDAOImpl();
+            AccountDAOImpl accountDAO = new AccountDAOImpl("prod");
             Account account = accountDAO.getByNumber(new BigDecimal(inquiry.getArguments().getFirst()));
             if (account.getId() != null && client.getId().equals(account.getClientId()))
                 checkResult = true;
@@ -64,7 +64,7 @@ public class CheckInquiry {
             int checkSum = ingSum.compareTo(BigDecimal.ZERO);
             if (checkSum < 0)
                 return false;
-            AccountDAOImpl accountDAO = new AccountDAOImpl();
+            AccountDAOImpl accountDAO = new AccountDAOImpl("prod");
             Account account = accountDAO.getByNumber(new BigDecimal(inquiry.getArguments().getFirst()));
             accountDAO.closeConnection();
             return account.getId() != null && client.getId().equals(account.getClientId());

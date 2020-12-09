@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
-    private Connection connection = getConnection();
+    private Connection connection;
+
+    public ClientDAOImpl(String setCase){
+        this.connection = getConnection(setCase);
+    }
 
     @Override
     public Client getById(Long id){

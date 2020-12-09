@@ -1,4 +1,4 @@
-package bank.service;
+package bank.dao;
 
 import bank.util.DataBaseUtil;
 import bank.dao.AccountDAO;

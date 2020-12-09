@@ -27,7 +27,7 @@ public class DataBaseUtil {
                 Class.forName(DB_Driver);
                 //connect to DB
                 connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-                System.out.println("DB connected");
+                //System.out.println("DB connected");
             } catch (ClassNotFoundException | SQLException e) {
                 System.out.println("DB connection ERROR");
                 e.printStackTrace();
@@ -40,7 +40,7 @@ public class DataBaseUtil {
         if (connection != null) {
             try {
                 connection.close();
-                System.out.println("DB disconnected");
+                //System.out.println("DB disconnected");
             } catch (SQLException e) {
                 e.printStackTrace();
             }

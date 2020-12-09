@@ -1,22 +1,21 @@
 package bank.service;
 
-import bank.dao.AccountDAO;
+import bank.dao.AccountDAOImpl;
+import bank.dao.CardDAOImpl;
 import bank.model.Account;
 import bank.model.Card;
-import bank.model.Client;
 import bank.net.Inquiry;
 import bank.net.Response;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class Command {
 
     public static Response execute(Inquiry inquiry){
         Response response = new Response();
         switch (inquiry.command) {
-            case ("CARD_ISSUE"):
+            case ("ISSUE_CARD"):
                 response = issueCard(new BigDecimal(inquiry.arguments.getFirst()));
                 break;
             case ("SHOW_CARDS"):
@@ -43,7 +42,7 @@ public class Command {
         cardDAO.add(card);
         if (cardDAO.getByNumber(card.getCardNumber()).getId() != null){
             response.setStatus(true);
-            response.setMessage("Card # " + String.valueOf(card.getCardNumber()) + "issued to account # " + accountNumber);
+            response.setMessage("Card # " + String.valueOf(card.getCardNumber()) + " issued to account # " + accountNumber);
         }
         cardDAO.closeConnection();
         accountDAO.closeConnection();
@@ -64,7 +63,7 @@ public class Command {
         if (cards.get(0).getId() != null){
             StringBuilder build = new StringBuilder();
             for (Card card : cards){
-                build.append(card.toString() + '\n');
+                build.append(card.toString() + ", ");
             }
             response.setMessage(build.toString());
         } else {
@@ -83,8 +82,8 @@ public class Command {
         accountDAO.update(account);
         Account check = accountDAO.getByNumber(accountNumber);
         if (check.getBalance().equals(account.getBalance())){
-           response = new Response(true, "Account :" + String.valueOf(accountNumber)
-                   + "\nBalance : " + String.valueOf(account.getBalance()));
+           response = new Response(true, "Account : " + String.valueOf(accountNumber)
+                   + " updated, Balance : " + String.valueOf(account.getBalance()));
         } else {
             accountDAO.update(defaultAc);
             response = new Response(false, "Error: account balance was not updated");
@@ -98,8 +97,8 @@ public class Command {
         AccountDAOImpl accountDAO = new AccountDAOImpl();
         Account account = accountDAO.getByNumber(accountNumber);
         accountDAO.closeConnection();
-        return new Response(true, "Account :" + String.valueOf(accountNumber)
-                + "\nBalance : " + String.valueOf(account.getBalance()));
+        return new Response(true, "Account : " + String.valueOf(accountNumber)
+                + ", Balance : " + String.valueOf(account.getBalance()));
     }
 
 

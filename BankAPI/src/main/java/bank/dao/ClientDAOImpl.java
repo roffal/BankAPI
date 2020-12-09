@@ -1,4 +1,4 @@
-package bank.service;
+package bank.dao;
 
 import bank.model.Card;
 import bank.util.DataBaseUtil;
@@ -106,7 +106,7 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
 
     @Override
     public Client getByLogin(String login) {
-        String sql = "SELECT id, name, login, pass FROM clients WHERE login =" + login;
+        String sql = "SELECT id, name, login, pass FROM clients WHERE login = '" + login +"'";
         return getClient(sql);
     }
 }

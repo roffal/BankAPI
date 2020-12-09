@@ -58,7 +58,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" +
+        return "{" +
                 "id=" + id +
                 ", cardNumber=" + cardNumber +
                 ", accountId=" + accountId +

@@ -16,6 +16,7 @@ public class CheckInquiry {
         this.client = new ClientDAOImpl().getByLogin(inquiry.getLogin());
         if (checkUser(client, inquiry) && checkCommand(client, inquiry))
             this.isChecked = true;
+        inquiry.setClientId(client.getId());
     }
 
     private boolean checkUser(Client client, Inquiry inquiry){

@@ -1,6 +1,8 @@
 package bank.service;
 
 import bank.model.Card;
+import bank.model.Client;
+import bank.net.Inquiry;
 import bank.net.Response;
 
 import java.math.BigDecimal;
@@ -9,20 +11,20 @@ import java.util.LinkedList;
 
 public class Command {
 
-    public static Response execute(String command, LinkedList<String> arguments){
+    public static Response execute(Inquiry inquiry){
         Response response = new Response();
-        switch (command) {
+        switch (inquiry.command) {
             case ("CARD_ISSUE"):
-                response = issueCard(new BigDecimal(arguments.getFirst()));
+                response = issueCard(new BigDecimal(inquiry.arguments.getFirst()));
                 break;
             case ("SHOW_CARDS"):
-                response = showCards();
+                response = showCards(inquiry.getLogin(), inquiry.getClientId());
                 break;
             case ("UPDATE_BALANCE"):
-                response = updateBalance(new BigDecimal(arguments.getFirst()), new BigDecimal(arguments.get(1)));
+                response = updateBalance(new BigDecimal(inquiry.arguments.getFirst()), new BigDecimal(inquiry.arguments.get(1)));
                 break;
             case ("CHECK_BALANCE"):
-                response = checkBalance(new BigDecimal(arguments.getFirst()));
+                response = checkBalance(new BigDecimal(inquiry.arguments.getFirst()));
                 break;
 
         }
@@ -41,9 +43,10 @@ public class Command {
             response.setStatus(true);
             response.setMessage("Card # " + String.valueOf(card.getCardNumber()) + "issued to account # " + accountNumber);
         }
+        cardDAO.closeConnection();
+        accountDAO.closeConnection();
         return response;
     }
-
 
     private static Long getUniqueCardNumber(CardDAOImpl cardDAO){
         //Of course I understand that this method is not safe to get a unique card number of 16 digits,
@@ -51,13 +54,27 @@ public class Command {
         return cardDAO.getLast().getCardNumber() + 1;
     }
 
-    private static Response showCards(){
+    private static Response showCards(String login, Long clientId){
         Response response = new Response();
+        CardDAOImpl cardDAO = new CardDAOImpl();
+        ArrayList<Card> cards = (ArrayList<Card>)cardDAO.getAllByClientID(clientId);
+        response.setStatus(true);
+        if (cards.get(0).getId() != null){
+            StringBuilder build = new StringBuilder();
+            for (Card card : cards){
+                build.append(card.toString() + '\n');
+            }
+            response.setMessage(build.toString());
+        } else {
+            response.setMessage("You have no cards issued yet");
+        }
+        cardDAO.closeConnection();
         return response;
     }
 
     private static Response updateBalance(BigDecimal accountNumber, BigDecimal sum){
         Response response = new Response();
+
         return response;
     }
 

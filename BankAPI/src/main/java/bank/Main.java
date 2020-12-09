@@ -29,7 +29,7 @@ public class Main {
         //check Inquiry
         CheckInquiry checkInquiry = new CheckInquiry(inq);
         if (checkInquiry.isChecked = true) {
-            Command.execute(inq.getCommand(), inq.getArguments());
+            Command.execute(inq);
         } else {
             response.setMessage("Error: incorrect data");
         }

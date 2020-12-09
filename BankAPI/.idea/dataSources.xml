@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="db" uuid="a3ab0cf4-b74f-4cf2-9691-d2c1740a1c1d">
+    <data-source source="LOCAL" name="test" uuid="a3ab0cf4-b74f-4cf2-9691-d2c1740a1c1d">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:~/SBER/BankAPI/db</jdbc-url>
+      <jdbc-url>jdbc:h2:~/test;MV_STORE=false</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="default@localhost" uuid="94118851-3bb9-40a1-b120-81cf108524ef">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:tcp://localhost:9092/default</jdbc-url>
     </data-source>
   </component>
 </project>

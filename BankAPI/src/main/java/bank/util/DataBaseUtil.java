@@ -22,23 +22,15 @@ public class DataBaseUtil {
         private String password;
 
         DB_Settings(String setCase){
-            switch (setCase){
-                case("prod"):
-                    dbURL = "jdbc:h2:~/SBER/BankAPI/db/db";
-                    dbDriver = "org.h2.Driver";
-                    username = "sa";
-                    password = "";
-                    break;
-                case("test"):
-                    dbURL = "jdbc:h2:~/test";
-                    dbDriver = "org.h2.Driver";
-                    username = "sa";
-                    password = "";
-                    break;
+            if ("prod".equals(setCase)) {
+                dbURL = "jdbc:h2:~/SBER/BankAPI/db/db";
+            } else {
+                dbURL = "jdbc:h2:~/test";
             }
-
+            dbDriver = "org.h2.Driver";
+            username = "sa";
+            password = "";
         }
-
     }
     public Connection getConnection(String setCase) {
         DB_Settings settings = new DB_Settings(setCase);

@@ -13,7 +13,7 @@ import java.sql.Statement;
 import java.util.LinkedList;
 
 public class Main {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args){
         renewDB();
 
         ///TODO : rewrite to HTTP here
@@ -28,7 +28,7 @@ public class Main {
 
         //check Inquiry
         CheckInquiry checkInquiry = new CheckInquiry(inq);
-        if (checkInquiry.isChecked == true) {
+        if (checkInquiry.isChecked) {
             response = Command.execute(inq);
         } else {
             response.setMessage("Error: incorrect data");
@@ -45,7 +45,7 @@ public class Main {
 
         //check Inquiry
         CheckInquiry checkInquiry1 = new CheckInquiry(inq);
-        if (checkInquiry1.isChecked == true) {
+        if (checkInquiry1.isChecked) {
             response1 = Command.execute(inq);
         } else {
             response1.setMessage("Error: incorrect data");
@@ -62,7 +62,7 @@ public class Main {
 
         //check Inquiry
         CheckInquiry checkInquiry3 = new CheckInquiry(inq);
-        if (checkInquiry3.isChecked == true) {
+        if (checkInquiry3.isChecked) {
             response3 = Command.execute(inq);
         } else {
             response3.setMessage("Error: incorrect data");
@@ -75,14 +75,14 @@ public class Main {
         inq.setPass("19780713");
         inq.setCommand("UPDATE_BALANCE");
         arguments = new LinkedList<>();
-        arguments.add("40817810099910004318");
+        arguments.add("408178100999100043");
         arguments.add("20.15");
         inq.setArguments(arguments);
         Response response2 = new Response();
 
         //check Inquiry
         CheckInquiry checkInquiry2 = new CheckInquiry(inq);
-        if (checkInquiry2.isChecked == true) {
+        if (checkInquiry2.isChecked) {
             response2 = Command.execute(inq);
         } else {
             response2.setMessage("Error: incorrect data");

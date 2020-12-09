@@ -1,25 +1,27 @@
+import bank.dao.AccountDAOImpl;
+import bank.model.Account;
 import bank.util.DataBaseUtil;
-import org.h2.tools.DeleteDbFiles;
-import org.h2.tools.Server;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.*;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class TestExample {
 
+
     @BeforeEach
-    private static void renewDB() {
+    public void renewDB() {
         DataBaseUtil util = new DataBaseUtil();
         Connection connection = util.getConnection("test");
         try {
             Statement statement = connection.createStatement();
             statement.execute("DROP TABLE IF EXISTS cards, clients, accounts");
             statement.execute("CREATE TABLE clients(id SERIAL NOT NULL PRIMARY KEY, name TEXT NOT NULL, login TEXT NOT NULL, pass TEXT NOT NULL)");
-            statement.execute("CREATE TABLE accounts (id SERIAL NOT NULL PRIMARY KEY, account_number DECIMAL , balance DECIMAL(15,2) NOT NULL DEFAULT 0, client_id INT NOT NULL references clients(id)");
+            statement.execute("CREATE TABLE accounts (id SERIAL NOT NULL PRIMARY KEY, account_number DECIMAL , balance DECIMAL(15,2) NOT NULL DEFAULT 0, client_id INT NOT NULL references clients(id))");
             statement.execute("CREATE TABLE cards (id SERIAL NOT NULL PRIMARY KEY, card_number BIGINT, account_id INT NOT NULL references accounts(id))");
             statement.execute("INSERT INTO clients(name, login, pass) VALUES ('Michael', 'Smith', '20001012'), ('Will', 'Parry', '19901119')");
             statement.execute("INSERT INTO accounts(account_number, client_id) VALUES (40817810099910004312, (SELECT id FROM clients where id = 1)), (40817810099910004313, (SELECT id FROM clients where id = 2))");
@@ -32,7 +34,14 @@ public class TestExample {
     }
 
     @Test
-    public void test1() throws SQLException, InterruptedException {
-
+    public void checkAccountDAOGetById(){
+        Account testAccount = new Account();
+        testAccount.setId(2l);
+        testAccount.setAccountNumber(new BigDecimal("40817810099910004313"));
+        testAccount.setBalance(new BigDecimal("0.00"));
+        testAccount.setClientId(2l);
+        AccountDAOImpl accountDAO = new AccountDAOImpl("test");
+        Account check = accountDAO.getById(2l);
+        Assert.assertEquals(testAccount, check);
     }
 }

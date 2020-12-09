@@ -72,7 +72,7 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
 
     @Override
     public void add(Client entity) {
-        String sql = "INSERT INTO clients (name, login, pass) VALUES (?, ?, ?))";
+        String sql = "INSERT INTO clients (name, login, pass) VALUES (?, ?, ?)";
         updateDB(entity, sql);
     }
 

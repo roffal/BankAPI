@@ -115,5 +115,10 @@ public class CardDAOImpl extends DataBaseUtil implements CardDAO {
         closePrepareStatement(ps);
     }
 
+    public Card getLast() {
+        String sql = "SELECT id, card_number, account_id from cards WHERE card_number = (SELECT MAX(card_number) FROM cards)";
+        return getCard(sql);
+    }
+
 
 }

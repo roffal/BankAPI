@@ -3,6 +3,7 @@ package bank;
 import bank.net.Inquiry;
 import bank.net.Response;
 import bank.service.CheckInquiry;
+import bank.service.Command;
 import bank.util.DataBaseUtil;
 
 import java.io.IOException;
@@ -24,10 +25,11 @@ public class Main {
         arguments.add("40817810099910004318");
         inq.setArguments(arguments);
         Response response = new Response();
-        
+
         //check Inquiry
         CheckInquiry checkInquiry = new CheckInquiry(inq);
         if (checkInquiry.isChecked = true) {
+            Command.execute(inq.getCommand(), inq.getArguments());
         } else {
             response.setMessage("Error: incorrect data");
         }

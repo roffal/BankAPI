@@ -1,51 +1,70 @@
 package bank.service;
 
+import bank.model.Card;
+import bank.net.Response;
+
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Command {
-    private String command;
-    private LinkedList<String> arguments;
 
-    Command(String command){
-        this.command = command;
-    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
-    }
-
-    public LinkedList<String> getArguments() {
-        return arguments;
-    }
-
-    public void setArguments(LinkedList<String> arguments) {
-        this.arguments = arguments;
-    }
-
-    /*public String execute(Command command){
-        switch (command.command) {
+    public static Response execute(String command, LinkedList<String> arguments){
+        Response response = new Response();
+        switch (command) {
             case ("CARD_ISSUE"):
-                issueCard(new BigDecimal(arguments.getFirst()));
+                response = issueCard(new BigDecimal(arguments.getFirst()));
                 break;
             case ("SHOW_CARDS"):
-                showCards();
+                response = showCards();
                 break;
             case ("UPDATE_BALANCE"):
-                updateBalance(new BigDecimal(arguments.getFirst()), new BigDecimal(arguments.get(1)));
+                response = updateBalance(new BigDecimal(arguments.getFirst()), new BigDecimal(arguments.get(1)));
                 break;
             case ("CHECK_BALANCE"):
-                checkBalance(new BigDecimal(arguments.getFirst()));
+                response = checkBalance(new BigDecimal(arguments.getFirst()));
                 break;
 
         }
-    }*/
+        return response;
+    }
+
+    private static Response issueCard(BigDecimal accountNumber){
+        Response response = new Response();
+        Card card = new Card();
+        CardDAOImpl cardDAO = new CardDAOImpl();
+        AccountDAOImpl accountDAO = new AccountDAOImpl();
+        card.setAccountId(accountDAO.getByNumber(accountNumber).getId());
+        card.setCardNumber(getUniqueCardNumber(cardDAO));
+        cardDAO.add(card);
+        if (cardDAO.getByNumber(card.getCardNumber()).getId() != null){
+            response.setStatus(true);
+            response.setMessage("Card # " + String.valueOf(card.getCardNumber()) + "issued to account # " + accountNumber);
+        }
+        return response;
+    }
+
+
+    private static Long getUniqueCardNumber(CardDAOImpl cardDAO){
+        //Of course I understand that this method is not safe to get a unique card number of 16 digits,
+        // but as this project has other main goal, I leave it as it is
+        return cardDAO.getLast().getCardNumber() + 1;
+    }
+
+    private static Response showCards(){
+        Response response = new Response();
+        return response;
+    }
+
+    private static Response updateBalance(BigDecimal accountNumber, BigDecimal sum){
+        Response response = new Response();
+        return response;
+    }
+
+    private static Response checkBalance(BigDecimal account_number){
+        Response response = new Response();
+        return response;
+    }
 
 
 

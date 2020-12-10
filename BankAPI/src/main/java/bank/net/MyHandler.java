@@ -20,12 +20,20 @@ public class MyHandler {
         StringBuilder htmlBuilder = new StringBuilder();
         if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
             String uri = exchange.getRequestURI().toString();
-            InputStream is = exchange.getRequestBody();
             Response response = Response.getResponse(uri, command);
-            htmlBuilder.append("<html><body><p>")
-                    .append(response.message)
-                    .append("</p></body><html>");
-
+            if (response.gson != null) {
+                htmlBuilder.append("<html><body><p>")
+                        .append(response.gson)
+                        .append("</p></body><html>");
+                exchange.sendResponseHeaders(response.status, response.gson.getBytes().length);
+                outputStream.write(response.gson.getBytes(StandardCharsets.UTF_8));
+            } else {
+                htmlBuilder.append("<html><body><p>")
+                        .append(response.message)
+                        .append("</p></body><html>");
+                exchange.sendResponseHeaders(response.status, htmlBuilder.toString().getBytes().length);
+                outputStream.write(htmlBuilder.toString().getBytes(StandardCharsets.UTF_8));
+            }
             System.out.print("Request : " + uri + "\nResponse : " + response.toString() +"\n");
             exchange.sendResponseHeaders(response.status, htmlBuilder.toString().getBytes().length);
             outputStream.write(htmlBuilder.toString().getBytes(StandardCharsets.UTF_8));

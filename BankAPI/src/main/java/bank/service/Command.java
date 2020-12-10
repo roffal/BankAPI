@@ -6,6 +6,7 @@ import bank.model.Account;
 import bank.model.Card;
 import bank.net.Inquiry;
 import bank.net.Response;
+import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -62,7 +63,8 @@ public class Command {
         response.status = 200;
         if (cards.get(0).getId() != null){
             response.message = cards.toString();
-            //response.gson.toJson(cards);
+            Gson gson = new Gson();
+            response.gson = gson.toJson(cards);
         } else {
             response.message = "You have no cards issued yet";
         }
@@ -95,7 +97,12 @@ public class Command {
         accountDAO.closeConnection();
         Response response = new Response(200, "Account : " + String.valueOf(accountNumber)
                 + ", Balance : " + String.valueOf(account.getBalance()));
-        //response.gson.toJson(account);
+        try {
+            Gson gson = new Gson();
+            response.gson = gson.toJson(account);
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
         return response;
     }
 

@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Response {
     public int status = 404;
     public String message = "Oops, we can't seem to find the page you're looking for. Check in with our service team to help you find it";
-    //public Gson gson;
+    public String gson;
 
     public Response(){
     }
@@ -25,13 +25,12 @@ public class Response {
         if (o == null || getClass() != o.getClass()) return false;
         Response response = (Response) o;
         return status == response.status &&
-                Objects.equals(message, response.message); //&&
-                //Objects.equals(gson, response.gson);
+                Objects.equals(message, response.message) && Objects.equals(gson, response.gson);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(status, message); //, gson);
+        return Objects.hash(status, message, gson);
     }
 
     @Override

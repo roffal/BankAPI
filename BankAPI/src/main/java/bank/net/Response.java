@@ -4,6 +4,7 @@ import bank.service.CheckInquiry;
 import bank.service.Command;
 import com.google.gson.Gson;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Objects;
 
 public class Response {
@@ -49,4 +50,5 @@ public class Response {
             response = Command.execute(inquiry);
         return response;
     }
+
 }

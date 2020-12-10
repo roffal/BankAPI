@@ -1,5 +1,7 @@
 package bank.net;
 
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -13,6 +15,26 @@ public class Inquiry {
     public LinkedList<String> arguments;
 
     public Inquiry(){
+    }
+
+    class JsonInquiry{
+        public String login;
+        public String pass;
+        public String account_number;
+        public String sum;
+    }
+
+    public Inquiry(String gson){
+        this();
+        Gson g = new Gson();
+        JsonInquiry jInq = g.fromJson(gson, JsonInquiry.class);
+        this.login = jInq.login;
+        this.pass = jInq.pass;
+        if (jInq.account_number != null) {
+            this.arguments.add(jInq.account_number);
+            if (jInq.sum != null)
+                this.arguments.add(jInq.sum);
+        }
     }
 
     public Inquiry(String uri, String command){

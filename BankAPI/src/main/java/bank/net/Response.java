@@ -2,29 +2,27 @@ package bank.net;
 
 import bank.service.CheckInquiry;
 import bank.service.Command;
-import com.sun.xml.internal.ws.api.message.Message;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Objects;
 
 public class Response {
     public int status = 404;
-    String Message;
+    String message = "Oops, we can't seem to find the page you're looking for. Check in with our service team to help you find it";
 
     public Response(){
     }
 
     public Response(int status, String Message){
         this.status = status;
-        this.Message = Message;
+        this.message = Message;
     }
 
     public String getMessage() {
-        return Message;
+        return message;
     }
 
     public void setMessage(String message) {
-        Message = message;
+        this.message = message;
     }
 
     @Override
@@ -33,26 +31,26 @@ public class Response {
         if (o == null || getClass() != o.getClass()) return false;
         Response response = (Response) o;
         return status == response.status &&
-                Objects.equals(Message, response.Message);
+                Objects.equals(message, response.message);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(status, Message);
+        return Objects.hash(status, message);
     }
 
     @Override
     public String toString() {
         return "{" +
                 "status=" + status +
-                ", message='" + Message + '\'' +
+                ", message='" + message + '\'' +
                 '}';
     }
 
     public static Response getResponse(String uri_str, String command){
         Inquiry inquiry = new Inquiry(uri_str, command);
         CheckInquiry checkInquiry = new CheckInquiry(inquiry);
-        Response response = new Response(404, "Oops, we can't seem to find the page you're looking for. Check in with our service team to help you find it");
+        Response response = new Response();
         if (checkInquiry.isChecked)
             response = Command.execute(inquiry);
         return response;

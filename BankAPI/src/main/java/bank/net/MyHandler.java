@@ -15,26 +15,39 @@ import java.util.Map;
 import java.util.Set;
 
 public class MyHandler {
-    public void handleCommon(HttpExchange exchange, String command) throws IOException {
+    public void handleGetCommon(HttpExchange exchange, String command) throws IOException {
         OutputStream outputStream = exchange.getResponseBody();
         StringBuilder htmlBuilder = new StringBuilder();
         if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
             String uri = exchange.getRequestURI().toString();
-
+            InputStream is = exchange.getRequestBody();
             Response response = Response.getResponse(uri, command);
             htmlBuilder.append("<html><body><p>")
                     .append(response.getMessage())
                     .append("</p></body><html>");
-
-            //Headers requestHeaders = exchange.getRequestHeaders();
-            //Set<Map.Entry<String, List<String>>> entries = requestHeaders.entrySet();
-
-            //not quite sure what this part about
-            //byte[] data = new byte[10];
 
             System.out.print("Request : " + uri + "\nResponse : " + response.toString() +"\n");
             exchange.sendResponseHeaders(response.status, htmlBuilder.toString().getBytes().length);
             outputStream.write(htmlBuilder.toString().getBytes(StandardCharsets.UTF_8));
         }
     }
+
+    public void handlePostCommon(HttpExchange exchange, String command) throws IOException {
+        OutputStream outputStream = exchange.getResponseBody();
+        StringBuilder htmlBuilder = new StringBuilder();
+        if (exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+            String uri = exchange.getRequestURI().toString();
+            InputStream is = exchange.getRequestBody();
+            Response response = Response.getResponse(uri, command);
+            //response.
+            htmlBuilder.append("<html><body><p>")
+                    .append(response.getMessage())
+                    .append("</p></body><html>");
+
+            System.out.print("Request : " + uri + "\nResponse : " + response.toString() +"\n");
+            exchange.sendResponseHeaders(response.status, htmlBuilder.toString().getBytes().length);
+            outputStream.write(htmlBuilder.toString().getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
 }

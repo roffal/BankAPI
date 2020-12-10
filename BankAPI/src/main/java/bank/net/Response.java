@@ -2,12 +2,14 @@ package bank.net;
 
 import bank.service.CheckInquiry;
 import bank.service.Command;
+import com.google.gson.Gson;
 
 import java.util.Objects;
 
 public class Response {
     public int status = 404;
-    String message = "Oops, we can't seem to find the page you're looking for. Check in with our service team to help you find it";
+    public String message = "Oops, we can't seem to find the page you're looking for. Check in with our service team to help you find it";
+    //public Gson gson;
 
     public Response(){
     }
@@ -17,26 +19,19 @@ public class Response {
         this.message = Message;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Response response = (Response) o;
         return status == response.status &&
-                Objects.equals(message, response.message);
+                Objects.equals(message, response.message); //&&
+                //Objects.equals(gson, response.gson);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(status, message);
+        return Objects.hash(status, message); //, gson);
     }
 
     @Override

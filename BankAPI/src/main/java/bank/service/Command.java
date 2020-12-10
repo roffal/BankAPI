@@ -42,7 +42,7 @@ public class Command {
         cardDAO.add(card);
         if (cardDAO.getByNumber(card.getCardNumber()).getId() != null){
             response.status = 200;
-            response.setMessage("Card # " + String.valueOf(card.getCardNumber()) + " issued to account # " + accountNumber);
+            response.message = "Card # " + String.valueOf(card.getCardNumber()) + " issued to account # " + accountNumber;
         }
         cardDAO.closeConnection();
         accountDAO.closeConnection();
@@ -61,9 +61,10 @@ public class Command {
         ArrayList<Card> cards = (ArrayList<Card>)cardDAO.getAllByClientID(clientId);
         response.status = 200;
         if (cards.get(0).getId() != null){
-            response.setMessage(cards.toString());
+            response.message = cards.toString();
+            //response.gson.toJson(cards);
         } else {
-            response.setMessage("You have no cards issued yet");
+            response.message = "You have no cards issued yet";
         }
         cardDAO.closeConnection();
         return response;
@@ -89,12 +90,13 @@ public class Command {
     }
 
     private static Response checkBalance(BigDecimal accountNumber){
-        Response response;
         AccountDAOImpl accountDAO = new AccountDAOImpl("prod");
         Account account = accountDAO.getByNumber(accountNumber);
         accountDAO.closeConnection();
-        return new Response(200, "Account : " + String.valueOf(accountNumber)
+        Response response = new Response(200, "Account : " + String.valueOf(accountNumber)
                 + ", Balance : " + String.valueOf(account.getBalance()));
+        //response.gson.toJson(account);
+        return response;
     }
 
 }

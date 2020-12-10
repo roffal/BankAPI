@@ -23,7 +23,7 @@ public class MyHandler {
             InputStream is = exchange.getRequestBody();
             Response response = Response.getResponse(uri, command);
             htmlBuilder.append("<html><body><p>")
-                    .append(response.getMessage())
+                    .append(response.message)
                     .append("</p></body><html>");
 
             System.out.print("Request : " + uri + "\nResponse : " + response.toString() +"\n");
@@ -41,7 +41,7 @@ public class MyHandler {
             Response response = Response.getResponse(uri, command);
             //response.
             htmlBuilder.append("<html><body><p>")
-                    .append(response.getMessage())
+                    .append(response.message)
                     .append("</p></body><html>");
 
             System.out.print("Request : " + uri + "\nResponse : " + response.toString() +"\n");

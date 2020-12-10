@@ -1,6 +1,8 @@
 package bank.net;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Objects;
 
 public class Inquiry {
@@ -11,6 +13,24 @@ public class Inquiry {
     public LinkedList<String> arguments;
 
     public Inquiry(){
+    }
+
+    public Inquiry(String uri, String command){
+        this();
+        this.command = command;
+        if (uri.contains("?") && uri.contains("&") && uri.contains("=")){
+            Map <String, String> map = getParams(uri);
+            LinkedList<String> args = new LinkedList<>();
+            for (Map.Entry<String, String> entry : map.entrySet()){
+                if (entry.getKey() == "login")
+                    this.login = entry.getValue();
+                else if (entry.getKey() == "pass")
+                    this.pass = entry.getValue();
+                else
+                    args.add(entry.getValue());
+            }
+            this.arguments = args;
+        }
     }
 
     public String getLogin() {
@@ -51,6 +71,21 @@ public class Inquiry {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
+    }
+
+
+    private Map<String,String> getParams(String uri) {
+        //Map<String, String> map = new HashMap<String, String>();
+        //if (uri.contains("?") && uri.contains("&") && uri.contains("=")) {
+        //    map = getParams(uri);
+        String arg_uri = uri.substring(uri.indexOf('?'), uri.length() - 1);
+        String[] pairs = arg_uri.split("&");
+        Map<String, String> map = new HashMap<>();
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=");
+            map.put(keyValue[0], keyValue[1]);
+        }
+        return map;
     }
 
     @Override

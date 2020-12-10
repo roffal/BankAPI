@@ -1,22 +1,29 @@
 package bank;
 
 import bank.net.Inquiry;
+import bank.net.MyHttpHandler;
 import bank.net.Response;
 import bank.service.CheckInquiry;
 import bank.service.Command;
 import bank.util.DataBaseUtil;
+import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 
 public class Main {
-    public static void main(String[] args){
-        renewDB();
+    public static void main(String[] args) throws IOException {
+        HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
 
-        ///TODO : rewrite to HTTP here
+        server.createContext("/test", new MyHttpHandler());
+        server.start();
+
+
+        /*renewDB();
         Inquiry inq = new Inquiry();
         inq.setLogin("Shamen");
         inq.setPass("19780713");
@@ -87,7 +94,7 @@ public class Main {
         } else {
             response2.setMessage("Error: incorrect data");
         }
-        System.out.println(response2.toString());
+        System.out.println(response2.toString());*/
 
 
     }

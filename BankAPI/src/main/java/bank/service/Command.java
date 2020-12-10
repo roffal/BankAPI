@@ -41,7 +41,7 @@ public class Command {
         card.setCardNumber(getUniqueCardNumber(cardDAO));
         cardDAO.add(card);
         if (cardDAO.getByNumber(card.getCardNumber()).getId() != null){
-            response.setStatus(true);
+            response.status = 200;
             response.setMessage("Card # " + String.valueOf(card.getCardNumber()) + " issued to account # " + accountNumber);
         }
         cardDAO.closeConnection();
@@ -52,14 +52,14 @@ public class Command {
     private static Long getUniqueCardNumber(CardDAOImpl cardDAO){
         //Of course I understand that this method is not safe to get a unique card number of 16 digits,
         // but as this project has other main goal, I leave it as it is
-        return cardDAO.getLast().getCardNumber() + 1;
+        return (cardDAO.getLast().getCardNumber() + 1) % 9_999_999_999_999_999l;
     }
 
     private static Response showCards(String login, Long clientId){
         Response response = new Response();
         CardDAOImpl cardDAO = new CardDAOImpl("prod");
         ArrayList<Card> cards = (ArrayList<Card>)cardDAO.getAllByClientID(clientId);
-        response.setStatus(true);
+        response.status = 200;
         if (cards.get(0).getId() != null){
             StringBuilder build = new StringBuilder();
             for (Card card : cards){
@@ -82,11 +82,11 @@ public class Command {
         accountDAO.update(account);
         Account check = accountDAO.getByNumber(accountNumber);
         if (check.getBalance().equals(account.getBalance())){
-           response = new Response(true, "Account : " + String.valueOf(accountNumber)
+           response = new Response(200, "Account : " + String.valueOf(accountNumber)
                    + " updated, Balance : " + String.valueOf(account.getBalance()));
         } else {
             accountDAO.update(defaultAc);
-            response = new Response(false, "Error: account balance was not updated");
+            response = new Response(504, "Error: account balance was not updated");
         }
         accountDAO.closeConnection();
         return response;
@@ -97,13 +97,8 @@ public class Command {
         AccountDAOImpl accountDAO = new AccountDAOImpl("prod");
         Account account = accountDAO.getByNumber(accountNumber);
         accountDAO.closeConnection();
-        return new Response(true, "Account : " + String.valueOf(accountNumber)
+        return new Response(200, "Account : " + String.valueOf(accountNumber)
                 + ", Balance : " + String.valueOf(account.getBalance()));
     }
-
-
-
-
-
 
 }

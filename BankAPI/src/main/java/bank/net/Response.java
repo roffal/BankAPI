@@ -1,28 +1,22 @@
 package bank.net;
 
+import bank.service.CheckInquiry;
+import bank.service.Command;
 import com.sun.xml.internal.ws.api.message.Message;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Objects;
 
 public class Response {
-    boolean status;
+    public int status = 404;
     String Message;
 
     public Response(){
-
     }
 
-    public Response(boolean status, String Message){
+    public Response(int status, String Message){
         this.status = status;
         this.Message = Message;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public String getMessage() {
@@ -53,5 +47,14 @@ public class Response {
                 "status=" + status +
                 ", Message='" + Message + '\'' +
                 '}';
+    }
+
+    public static Response getResponse(String uri_str, String command){
+        Inquiry inquiry = new Inquiry(uri_str, command);
+        CheckInquiry checkInquiry = new CheckInquiry(inquiry);
+        Response response = new Response(404, "Oops, we can't seem to find the page you're looking for. Check in with our service team to help you find it");
+        if (checkInquiry.isChecked)
+            response = Command.execute(inquiry);
+        return response;
     }
 }

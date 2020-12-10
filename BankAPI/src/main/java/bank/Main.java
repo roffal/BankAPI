@@ -1,10 +1,9 @@
 package bank;
 
-import bank.net.Inquiry;
-import bank.net.MyHttpHandler;
-import bank.net.Response;
-import bank.service.CheckInquiry;
-import bank.service.Command;
+import bank.net.CheckBalanceHandler;
+import bank.net.IssueCardHandler;
+import bank.net.ShowCardsHandler;
+import bank.net.UpdateBalanceHandler;
 import bank.util.DataBaseUtil;
 import com.sun.net.httpserver.HttpServer;
 
@@ -13,18 +12,21 @@ import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        //DataBaseUtil.renewDB();
         HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
 
-        server.createContext("/test", new MyHttpHandler());
+        server.createContext("/show_cards", new ShowCardsHandler());
+        server.createContext("/issue_card", new IssueCardHandler());
+        server.createContext("/check_balance", new CheckBalanceHandler());
+        server.createContext("/update_balance", new UpdateBalanceHandler());
         server.start();
 
 
-        /*renewDB();
-        Inquiry inq = new Inquiry();
+
+        /*Inquiry inq = new Inquiry();
         inq.setLogin("Shamen");
         inq.setPass("19780713");
         inq.setCommand("ISSUE_CARD");
@@ -97,19 +99,5 @@ public class Main {
         System.out.println(response2.toString());*/
 
 
-    }
-
-    private static void renewDB() {
-        DataBaseUtil util = new DataBaseUtil();
-        Connection connection = util.getConnection("prod");
-        try {
-            Statement statement = connection.createStatement();
-            DataBaseUtil.createDB(statement);
-        } catch (SQLException | IOException e) {
-            // "DriverManager.getConnection" Exception handling
-            e.printStackTrace();
-            System.out.println("SQL error!");
-        }
-        util.closeConnection();
     }
 }

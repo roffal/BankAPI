@@ -67,6 +67,20 @@ public class DataBaseUtil {
         statement.execute(data);
     }
 
+    public static void renewDB() {
+        DataBaseUtil util = new DataBaseUtil();
+        Connection connection = util.getConnection("prod");
+        try {
+            Statement statement = connection.createStatement();
+            DataBaseUtil.createDB(statement);
+        } catch (SQLException | IOException e) {
+            // "DriverManager.getConnection" Exception handling
+            e.printStackTrace();
+            System.out.println("SQL error!");
+        }
+        util.closeConnection();
+    }
+
     public PreparedStatement getPreparedStatement(String sql){
         PreparedStatement ps = null;
         try {

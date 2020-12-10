@@ -50,7 +50,7 @@ public class Command {
     }
 
     private static Long getUniqueCardNumber(CardDAOImpl cardDAO){
-        //Of course I understand that this method is not safe to get a unique card number of 16 digits,
+        //Of course I understand that this method is not safest way to get a unique card number of 16 digits,
         // but as this project has other main goal, I leave it as it is
         return (cardDAO.getLast().getCardNumber() + 1) % 9_999_999_999_999_999l;
     }
@@ -61,11 +61,7 @@ public class Command {
         ArrayList<Card> cards = (ArrayList<Card>)cardDAO.getAllByClientID(clientId);
         response.status = 200;
         if (cards.get(0).getId() != null){
-            StringBuilder build = new StringBuilder();
-            for (Card card : cards){
-                build.append(card.toString() + ", ");
-            }
-            response.setMessage(build.toString());
+            response.setMessage(cards.toString());
         } else {
             response.setMessage("You have no cards issued yet");
         }

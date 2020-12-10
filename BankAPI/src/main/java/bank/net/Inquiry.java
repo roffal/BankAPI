@@ -19,12 +19,13 @@ public class Inquiry {
         this();
         this.command = command;
         if (uri.contains("?") && uri.contains("&") && uri.contains("=")){
-            Map <String, String> map = getParams(uri);
+            String cut = uri.substring(uri.indexOf("?") + 1, uri.length());
+            Map <String, String> map = getParams(cut);
             LinkedList<String> args = new LinkedList<>();
             for (Map.Entry<String, String> entry : map.entrySet()){
-                if (entry.getKey() == "login")
+                if (entry.getKey().equals("login"))
                     this.login = entry.getValue();
-                else if (entry.getKey() == "pass")
+                else if (entry.getKey().equals("pass"))
                     this.pass = entry.getValue();
                 else
                     args.add(entry.getValue());
@@ -75,11 +76,7 @@ public class Inquiry {
 
 
     private Map<String,String> getParams(String uri) {
-        //Map<String, String> map = new HashMap<String, String>();
-        //if (uri.contains("?") && uri.contains("&") && uri.contains("=")) {
-        //    map = getParams(uri);
-        String arg_uri = uri.substring(uri.indexOf('?'), uri.length() - 1);
-        String[] pairs = arg_uri.split("&");
+        String[] pairs = uri.split("&");
         Map<String, String> map = new HashMap<>();
         for (String pair : pairs) {
             String[] keyValue = pair.split("=");

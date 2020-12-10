@@ -43,9 +43,9 @@ public class Response {
 
     @Override
     public String toString() {
-        return "Response{" +
+        return "{" +
                 "status=" + status +
-                ", Message='" + Message + '\'' +
+                ", message='" + Message + '\'' +
                 '}';
     }
 

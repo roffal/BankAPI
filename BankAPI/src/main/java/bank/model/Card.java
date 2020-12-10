@@ -59,6 +59,13 @@ public class Card {
     @Override
     public String toString() {
         return "{" +
+                "\"id\" : " + id +
+                ", \"cardNumber\" : " + "\"" + cardNumber + "\""+
+                '}';
+    }
+
+    public String toStringAll() {
+        return "{" +
                 "id=" + id +
                 ", cardNumber=" + cardNumber +
                 ", accountId=" + accountId +

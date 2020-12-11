@@ -4,8 +4,6 @@ import bank.dao.AccountDAOImpl;
 import bank.dao.CardDAOImpl;
 import bank.model.Account;
 import bank.model.Card;
-import bank.net.Inquiry;
-import bank.net.Response;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
@@ -13,31 +11,32 @@ import java.util.ArrayList;
 
 public class Command {
 
-    public static Response execute(Inquiry inquiry){
+    public static Response execute(Inquiry inquiry, String setCase){
         Response response = new Response();
         switch (inquiry.command) {
             case ("ISSUE_CARD"):
-                response = issueCard(new BigDecimal(inquiry.arguments.getFirst()));
+                response = issueCard(new BigDecimal(inquiry.arguments.getFirst()), setCase);
                 break;
             case ("SHOW_CARDS"):
-                response = showCards(inquiry.getLogin(), inquiry.getClientId());
+                response = showCards(inquiry.getLogin(), inquiry.getClientId(), setCase);
                 break;
             case ("UPDATE_BALANCE"):
-                response = updateBalance(new BigDecimal(inquiry.arguments.getFirst()), new BigDecimal(inquiry.arguments.get(1)));
+                response = updateBalance(new BigDecimal(inquiry.arguments.getFirst()),
+                        new BigDecimal(inquiry.arguments.get(1)), setCase);
                 break;
             case ("CHECK_BALANCE"):
-                response = checkBalance(new BigDecimal(inquiry.arguments.getFirst()));
+                response = checkBalance(new BigDecimal(inquiry.arguments.getFirst()), setCase);
                 break;
 
         }
         return response;
     }
 
-    private static Response issueCard(BigDecimal accountNumber){
+    private static Response issueCard(BigDecimal accountNumber, String setCase){
         Response response = new Response();
         Card card = new Card();
-        CardDAOImpl cardDAO = new CardDAOImpl("prod");
-        AccountDAOImpl accountDAO = new AccountDAOImpl("prod");
+        CardDAOImpl cardDAO = new CardDAOImpl(setCase);
+        AccountDAOImpl accountDAO = new AccountDAOImpl(setCase);
         card.setAccountId(accountDAO.getByNumber(accountNumber).getId());
         card.setCardNumber(getUniqueCardNumber(cardDAO));
         cardDAO.add(card);
@@ -56,15 +55,19 @@ public class Command {
         return (cardDAO.getLast().getCardNumber() + 1) % 9_999_999_999_999_999l;
     }
 
-    private static Response showCards(String login, Long clientId){
+    private static Response showCards(String login, Long clientId, String setCase){
         Response response = new Response();
-        CardDAOImpl cardDAO = new CardDAOImpl("prod");
+        CardDAOImpl cardDAO = new CardDAOImpl(setCase);
         ArrayList<Card> cards = (ArrayList<Card>)cardDAO.getAllByClientID(clientId);
         response.status = 200;
-        if (cards.get(0).getId() != null){
+        if (cards.size() > 0){
             response.message = cards.toString();
             Gson gson = new Gson();
-            response.gson = gson.toJson(cards);
+            try {
+                response.gson = gson.toJson(cards);
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
         } else {
             response.message = "You have no cards issued yet";
         }
@@ -72,9 +75,9 @@ public class Command {
         return response;
     }
 
-    private static Response updateBalance(BigDecimal accountNumber, BigDecimal sum){
+    private static Response updateBalance(BigDecimal accountNumber, BigDecimal sum, String setCase){
         Response response;
-        AccountDAOImpl accountDAO = new AccountDAOImpl("prod");
+        AccountDAOImpl accountDAO = new AccountDAOImpl(setCase);
         Account defaultAc = accountDAO.getByNumber(accountNumber);
         Account account = accountDAO.getByNumber(accountNumber);
         account.setBalance(account.getBalance().add(sum));
@@ -91,8 +94,8 @@ public class Command {
         return response;
     }
 
-    private static Response checkBalance(BigDecimal accountNumber){
-        AccountDAOImpl accountDAO = new AccountDAOImpl("prod");
+    private static Response checkBalance(BigDecimal accountNumber, String setCase){
+        AccountDAOImpl accountDAO = new AccountDAOImpl(setCase);
         Account account = accountDAO.getByNumber(accountNumber);
         accountDAO.closeConnection();
         Response response = new Response(200, "Account : " + String.valueOf(accountNumber)

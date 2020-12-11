@@ -4,7 +4,6 @@ import bank.dao.AccountDAOImpl;
 import bank.dao.ClientDAOImpl;
 import bank.model.Account;
 import bank.model.Client;
-import bank.net.Inquiry;
 
 import java.math.BigDecimal;
 
@@ -13,9 +12,9 @@ public class CheckInquiry {
     Inquiry inquiry;
     public boolean isChecked = false;
 
-    public CheckInquiry(Inquiry inquiry){
+    public CheckInquiry(Inquiry inquiry, String setCase){
         this.inquiry = inquiry;
-        ClientDAOImpl clientDAO = new ClientDAOImpl("prod");
+        ClientDAOImpl clientDAO = new ClientDAOImpl(setCase);
         this.client = clientDAO.getByLogin(inquiry.getLogin());
         clientDAO.closeConnection();
         if (checkUser(client, inquiry) && checkCommand(client, inquiry))
@@ -24,7 +23,7 @@ public class CheckInquiry {
     }
 
     private boolean checkUser(Client client, Inquiry inquiry){
-        if (client.getId() != null && (client.getPass().equals(inquiry.getPass())))
+        if (inquiry != null && client.getId() != null && (client.getPass().equals(inquiry.getPass())))
             return true;
         return false;
     }

@@ -1,10 +1,5 @@
-package bank.net;
+package bank.service;
 
-import bank.service.CheckInquiry;
-import bank.service.Command;
-import com.google.gson.Gson;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Objects;
 
 public class Response {
@@ -44,10 +39,10 @@ public class Response {
 
     public static Response getResponse(String uri_str, String command){
         Inquiry inquiry = new Inquiry(uri_str, command);
-        CheckInquiry checkInquiry = new CheckInquiry(inquiry);
+        CheckInquiry checkInquiry = new CheckInquiry(inquiry, "prod");
         Response response = new Response();
         if (checkInquiry.isChecked)
-            response = Command.execute(inquiry);
+            response = Command.execute(inquiry, "prod");
         return response;
     }
 

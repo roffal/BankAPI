@@ -1,4 +1,4 @@
-package bank.net;
+package bank.service;
 
 import com.google.gson.Gson;
 

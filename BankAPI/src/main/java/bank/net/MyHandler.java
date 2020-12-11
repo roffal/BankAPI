@@ -2,16 +2,12 @@ package bank.net;
 
 import bank.service.CheckInquiry;
 import bank.service.Command;
-import com.sun.net.httpserver.Headers;
+import bank.service.Inquiry;
+import bank.service.Response;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class MyHandler {
     public void handleGetCommon(HttpExchange exchange, String command) throws IOException {
@@ -53,10 +49,10 @@ public class MyHandler {
             }
             String gson = gsonBuild.toString();
             Inquiry inquiry = new Inquiry(gson);
-            CheckInquiry checkInquiry = new CheckInquiry(inquiry);
+            CheckInquiry checkInquiry = new CheckInquiry(inquiry, "prod");
             Response response = new Response();
             if (checkInquiry.isChecked)
-                response = Command.execute(inquiry);
+                response = Command.execute(inquiry, "prod");
 
             htmlBuilder.append("<html><body><p>")
                     .append(response.message)

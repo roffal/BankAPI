@@ -30,8 +30,6 @@ public class MyHandler {
                 outputStream.write(htmlBuilder.toString().getBytes(StandardCharsets.UTF_8));
             }
             System.out.print("Request : " + uri + "\nResponse : " + response.toString() +"\n");
-            exchange.sendResponseHeaders(response.status, htmlBuilder.toString().getBytes().length);
-            outputStream.write(htmlBuilder.toString().getBytes(StandardCharsets.UTF_8));
        // }
     }
 
@@ -43,12 +41,13 @@ public class MyHandler {
             InputStream is = exchange.getRequestBody();
             BufferedReader read = new BufferedReader(new InputStreamReader(is));
             StringBuilder gsonBuild = new StringBuilder();
-            String line = "";
+            String line;
             while ((line = read.readLine()) != null){
                 gsonBuild.append(line);
             }
             String gson = gsonBuild.toString();
             Inquiry inquiry = new Inquiry(gson);
+            inquiry.command = command;
             CheckInquiry checkInquiry = new CheckInquiry(inquiry, "prod");
             Response response = new Response();
             if (checkInquiry.isChecked)

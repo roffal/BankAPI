@@ -9,5 +9,5 @@ public interface AccountDAO extends DAO<Account>{
 
     public Account getByNumber(BigDecimal id);
 
-    public List<Account> getAllByClientId(Long id);
+    List<Account> getAllByClientId(Long id);
 }

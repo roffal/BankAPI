@@ -1,8 +1,7 @@
 package bank.dao;
 
-import bank.util.DataBaseUtil;
-import bank.dao.AccountDAO;
 import bank.model.Account;
+import bank.util.DataBaseUtil;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -21,16 +20,16 @@ public class AccountDAOImpl extends DataBaseUtil implements AccountDAO {
 
     @Override
     public List<Account> getAll() {
-        List<Account> accounts = new ArrayList<Account>();
+        List<Account> accounts = new ArrayList<>();
         String sql = "SELECT id, account_number, balance, client_id FROM accounts";
         return getAccounts(accounts, sql);
     }
 
     @Override
     public List<Account> getAllByClientId(Long id) {
-        List<Account> accounts = new ArrayList<Account>();
+        List<Account> accounts = new ArrayList<>();
         String sql = "SELECT id, account_number, balance, client_id" +
-                " FROM accounts WHERE client_id =" + String.valueOf(id);
+                " FROM accounts WHERE client_id =" + id;
         return getAccounts(accounts, sql);
     }
 
@@ -56,13 +55,13 @@ public class AccountDAOImpl extends DataBaseUtil implements AccountDAO {
 
     @Override
     public Account getById(Long id) {
-            String sql = "SELECT id, account_number, balance, client_id FROM accounts WHERE id = " + String.valueOf(id);
+            String sql = "SELECT id, account_number, balance, client_id FROM accounts WHERE id = " + id;
         return getAccount(sql);
     }
 
     @Override
     public Account getByNumber(BigDecimal number) {
-        String sql = "SELECT id, account_number, balance, client_id FROM accounts WHERE account_number = " + String.valueOf(number);
+        String sql = "SELECT id, account_number, balance, client_id FROM accounts WHERE account_number = " + number;
         return getAccount(sql);
     }
 
@@ -88,7 +87,7 @@ public class AccountDAOImpl extends DataBaseUtil implements AccountDAO {
     @Override
     public void update(Account account) {
         String sql = "UPDATE accounts SET account_number = ?, balance = ?, " +
-                "client_id = ? WHERE ID = " + String.valueOf(account.getId());
+                "client_id = ? WHERE ID = " + account.getId();
         updateDB(account, sql);
     }
 
@@ -113,7 +112,7 @@ public class AccountDAOImpl extends DataBaseUtil implements AccountDAO {
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE FROM accounts WHERE id =" + String.valueOf(id);
+        String sql = "DELETE FROM accounts WHERE id =" + id;
         PreparedStatement ps = getPreparedStatement(sql);
         try {
             ps.executeUpdate();

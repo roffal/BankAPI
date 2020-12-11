@@ -1,6 +1,7 @@
 package bank.service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -17,23 +18,30 @@ public class Inquiry {
     public Inquiry(){
     }
 
-    class JsonInquiry{
+    static class JsonInquiry{
         public String login;
         public String pass;
-        public String account_number;
+        public String account;
         public String sum;
     }
 
     public Inquiry(String gson){
         this();
         Gson g = new Gson();
-        JsonInquiry jInq = g.fromJson(gson, JsonInquiry.class);
-        this.login = jInq.login;
-        this.pass = jInq.pass;
-        if (jInq.account_number != null) {
-            this.arguments.add(jInq.account_number);
-            if (jInq.sum != null)
-                this.arguments.add(jInq.sum);
+        JsonInquiry jInq;
+        try {
+            jInq = g.fromJson(gson, JsonInquiry.class);
+            this.login = jInq.login;
+            this.pass = jInq.pass;
+            if (jInq.account != null) {
+                this.arguments = new LinkedList<>();
+                this.arguments.add(jInq.account);
+                if (jInq.sum != null)
+                    this.arguments.add(jInq.sum);
+            }
+        } catch (JsonIOException e){
+            System.out.println("IO error: json is purely formatted");
+            e.printStackTrace();
         }
     }
 
@@ -41,7 +49,7 @@ public class Inquiry {
         this();
         this.command = command;
         if (uri.contains("?") && uri.contains("&") && uri.contains("=")){
-            String cut = uri.substring(uri.indexOf("?") + 1, uri.length());
+            String cut = uri.substring(uri.indexOf("?") + 1);
             Map <String, String> map = getParams(cut);
             LinkedList<String> args = new LinkedList<>();
             for (Map.Entry<String, String> entry : map.entrySet()){

@@ -18,7 +18,7 @@ public class Command {
                 response = issueCard(new BigDecimal(inquiry.arguments.getFirst()), setCase);
                 break;
             case ("SHOW_CARDS"):
-                response = showCards(inquiry.getLogin(), inquiry.getClientId(), setCase);
+                response = showCards(inquiry.getClientId(), setCase);
                 break;
             case ("UPDATE_BALANCE"):
                 response = updateBalance(new BigDecimal(inquiry.arguments.getFirst()),
@@ -42,7 +42,7 @@ public class Command {
         cardDAO.add(card);
         if (cardDAO.getByNumber(card.getCardNumber()).getId() != null){
             response.status = 200;
-            response.message = "Card # " + String.valueOf(card.getCardNumber()) + " issued to account # " + accountNumber;
+            response.message = "Card # " + card.getCardNumber() + " issued to account # " + accountNumber;
         }
         cardDAO.closeConnection();
         accountDAO.closeConnection();
@@ -52,10 +52,10 @@ public class Command {
     private static Long getUniqueCardNumber(CardDAOImpl cardDAO){
         //Of course I understand that this method is not safest way to get a unique card number of 16 digits,
         // but as this project has other main goal, I leave it as it is
-        return (cardDAO.getLast().getCardNumber() + 1) % 9_999_999_999_999_999l;
+        return (cardDAO.getLast().getCardNumber() + 1) % 9_999_999_999_999_999L;
     }
 
-    private static Response showCards(String login, Long clientId, String setCase){
+    private static Response showCards(Long clientId, String setCase){
         Response response = new Response();
         CardDAOImpl cardDAO = new CardDAOImpl(setCase);
         ArrayList<Card> cards = (ArrayList<Card>)cardDAO.getAllByClientID(clientId);
@@ -84,8 +84,8 @@ public class Command {
         accountDAO.update(account);
         Account check = accountDAO.getByNumber(accountNumber);
         if (check.getBalance().equals(account.getBalance())){
-           response = new Response(200, "Account : " + String.valueOf(accountNumber)
-                   + " updated, Balance : " + String.valueOf(account.getBalance()));
+           response = new Response(200, "Account : " + accountNumber
+                   + " updated, Balance : " + account.getBalance());
         } else {
             accountDAO.update(defaultAc);
             response = new Response(504, "Error: account balance was not updated");
@@ -98,8 +98,8 @@ public class Command {
         AccountDAOImpl accountDAO = new AccountDAOImpl(setCase);
         Account account = accountDAO.getByNumber(accountNumber);
         accountDAO.closeConnection();
-        Response response = new Response(200, "Account : " + String.valueOf(accountNumber)
-                + ", Balance : " + String.valueOf(account.getBalance()));
+        Response response = new Response(200, "Account : " + accountNumber
+                + ", Balance : " + account.getBalance());
         try {
             Gson gson = new Gson();
             response.gson = gson.toJson(account);

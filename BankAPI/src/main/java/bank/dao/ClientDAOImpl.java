@@ -1,11 +1,12 @@
 package bank.dao;
 
-import bank.model.Card;
-import bank.util.DataBaseUtil;
-import bank.dao.ClientDAO;
 import bank.model.Client;
+import bank.util.DataBaseUtil;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
 
     @Override
     public Client getById(Long id){
-        String sql = "SELECT id, name, login, pass FROM clients WHERE id = " + String.valueOf(id);
+        String sql = "SELECT id, name, login, pass FROM clients WHERE id = " + id;
         return getClient(sql);
     }
 
@@ -43,7 +44,7 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
 
     @Override
     public List<Client> getAll() {
-        List<Client> clients = new ArrayList<Client>();
+        List<Client> clients = new ArrayList<>();
         String sql = "SELECT id, name, login, pass FROM clients";
         PreparedStatement ps = getPreparedStatement(sql);
         try {
@@ -66,7 +67,7 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
 
     @Override
     public void update(Client entity) {
-        String sql = "UPDATE clients SET name = ?, login = ?, pass = ? WHERE ID = " + String.valueOf(entity.getId());
+        String sql = "UPDATE clients SET name = ?, login = ?, pass = ? WHERE ID = " + entity.getId();
         updateDB(entity, sql);
     }
 
@@ -91,7 +92,7 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE FROM clients WHERE id =" + String.valueOf(id);
+        String sql = "DELETE FROM clients WHERE id =" + id;
         PreparedStatement ps = getPreparedStatement(sql);
         try {
             ps.executeUpdate();
@@ -104,7 +105,7 @@ public class ClientDAOImpl extends DataBaseUtil implements ClientDAO {
     @Override
     public Client getByAccountID(Long accountId) {
         String sql = "SELECT id, name, login, pass FROM clients " +
-                "WHERE id = (SELECT client_id FROM accounts WHERE id = " + String.valueOf(accountId) +")";
+                "WHERE id = (SELECT client_id FROM accounts WHERE id = " + accountId +")";
         return getClient(sql);
     }
 

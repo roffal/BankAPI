@@ -1,8 +1,7 @@
 package bank.dao;
 
-import bank.util.DataBaseUtil;
-import bank.dao.CardDAO;
 import bank.model.Card;
+import bank.util.DataBaseUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,13 +19,13 @@ public class CardDAOImpl extends DataBaseUtil implements CardDAO {
 
     @Override
     public Card getById(Long id){
-        String sql = "SELECT id, card_number, account_id from cards WHERE id =" + String.valueOf(id);
+        String sql = "SELECT id, card_number, account_id from cards WHERE id =" + id;
         return getCard(sql);
     }
 
     @Override
     public Card getByNumber(Long number){
-        String sql = "SELECT id, card_number, account_id from cards WHERE card_number = " + String.valueOf(number);
+        String sql = "SELECT id, card_number, account_id from cards WHERE card_number = " + number;
         return getCard(sql);
     }
 
@@ -68,16 +67,16 @@ public class CardDAOImpl extends DataBaseUtil implements CardDAO {
 
     @Override
     public List<Card> getAll() {
-        List<Card> cards = new ArrayList<Card>();
+        List<Card> cards = new ArrayList<>();
         String sql = "SELECT id, card_number, account_id FROM cards";
         return getCards(cards, sql);
     }
 
     @Override
     public List<Card> getAllByClientID(Long id) {
-        List<Card> cards = new ArrayList<Card>();
+        List<Card> cards = new ArrayList<>();
         String sql = "SELECT cards.id, cards.card_number, cards.account_id FROM cards, accounts WHERE cards.account_id =" +
-                " accounts.id and accounts.client_id = " + String.valueOf(id);
+                " accounts.id and accounts.client_id = " + id;
         return getCards(cards, sql);
     }
 
@@ -103,13 +102,13 @@ public class CardDAOImpl extends DataBaseUtil implements CardDAO {
 
     @Override
     public void update(Card card) {
-        String sql = "UPDATE cards SET card_number = ?, account_id = ? WHERE ID = " + String.valueOf(card.getId());
+        String sql = "UPDATE cards SET card_number = ?, account_id = ? WHERE ID = " + card.getId();
         updateDB(card, sql);
     }
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE FROM cards WHERE id =" + String.valueOf(id);
+        String sql = "DELETE FROM cards WHERE id =" + id;
         PreparedStatement ps = getPreparedStatement(sql);
         try {
             ps.executeUpdate();

@@ -9,11 +9,15 @@ import java.io.OutputStream;
 
 public class ShowCardsHandler extends MyHandler implements HttpHandler {
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
-        OutputStream outputStream = exchange.getResponseBody();
-        InputStream is = exchange.getRequestBody();
-        handleGetCommon(exchange, "SHOW_CARDS");
-        outputStream.flush();
-        outputStream.close();
+    public void handle(HttpExchange exchange){
+        try {
+            OutputStream outputStream = exchange.getResponseBody();
+            InputStream is = exchange.getRequestBody();
+            handleGetCommon(exchange, "SHOW_CARDS");
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

@@ -1,11 +1,7 @@
 package bank.model;
 
-import com.sun.tools.internal.xjc.reader.dtd.bindinfo.BIAttribute;
-
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 
 public class Account {

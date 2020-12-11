@@ -1,23 +1,20 @@
 package bank.util;
 
-import java.io.*;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
-import java.util.Properties;
 
 /**
  * Kozlina Iya, 2020
  */
 
 public class DataBaseUtil {
-
-    public static final String PATH_TO_PROPERTIES = "src/main/resources/config.properties";
     private static final String pathSchema = "/Users/iyakozlina/SBER/BankAPI/src/main/resources/schema.sql";
     private static final String pathData = "/Users/iyakozlina/SBER/BankAPI/src/main/resources/data.sql";
     private Connection connection;
 
-    class DB_Settings{
+    static class DB_Settings{
         public String dbURL;
         public String dbDriver;
         private String username;

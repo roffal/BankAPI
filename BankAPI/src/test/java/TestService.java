@@ -1,5 +1,4 @@
 import bank.dao.AccountDAOImpl;
-import bank.dao.CardDAO;
 import bank.dao.CardDAOImpl;
 import bank.dao.ClientDAOImpl;
 import bank.model.Account;
@@ -11,10 +10,9 @@ import bank.service.Inquiry;
 import bank.service.Response;
 import bank.util.DataBaseUtil;
 import com.google.gson.Gson;
-import com.sun.org.apache.regexp.internal.RE;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -22,7 +20,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class TestService {
 
@@ -392,6 +389,5 @@ public class TestService {
         accountDAO.closeConnection();
         Assert.assertEquals(account.getBalance(), new BigDecimal("20.15"));
     }
-
 
 }
